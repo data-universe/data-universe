@@ -1,0 +1,16 @@
+{
+  "name": "data-universe",
+  "private": true,
+  "version": "0.0.1",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcusrettig/data-universe.git"
+  },
+  "author": "marcusrettig",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marcusrettig/data-universe/issues"
+  },
+  "homepage": "https://github.com/marcusrettig/data-universe#readme"
+}
