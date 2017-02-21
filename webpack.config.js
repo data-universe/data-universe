@@ -18,7 +18,7 @@ module.exports = {
   resolve: {
     extensions: ['.js'],
     alias: {
-      three$: path.resolve(__dirname, 'node_modules/three/src/'),
+      three: path.resolve(__dirname, 'node_modules/three/src/'),
     },
   },
   plugins: [new HtmlWebpackPlugin({

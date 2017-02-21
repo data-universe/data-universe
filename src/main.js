@@ -1,9 +1,9 @@
-import { Scene } from 'three/src/scenes/Scene';
-import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera';
-import { WebGLRenderer } from 'three/src/renderers/WebGLRenderer';
-import { BoxGeometry } from 'three/src/geometries/BoxGeometry';
-import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial';
-import { Mesh } from 'three/src/objects/Mesh';
+import { Scene } from 'three/scenes/Scene';
+import { PerspectiveCamera } from 'three/cameras/PerspectiveCamera';
+import { WebGLRenderer } from 'three/renderers/WebGLRenderer';
+import { BoxGeometry } from 'three/geometries/BoxGeometry';
+import { MeshBasicMaterial } from 'three/materials/MeshBasicMaterial';
+import { Mesh } from 'three/objects/Mesh';
 
 const scene = new Scene();
 const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
