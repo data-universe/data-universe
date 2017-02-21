@@ -12,5 +12,16 @@
   "bugs": {
     "url": "https://github.com/marcusrettig/data-universe/issues"
   },
-  "homepage": "https://github.com/marcusrettig/data-universe#readme"
+  "homepage": "https://github.com/marcusrettig/data-universe#readme",
+  "devDependencies": {
+    "eslint": "^3.16.0",
+    "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "html-webpack-plugin": "^2.28.0",
+    "webpack": "^2.2.1",
+    "webpack-glsl-loader": "^1.0.1"
+  },
+  "dependencies": {
+    "three": "^0.84.0"
+  }
 }
