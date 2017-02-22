@@ -14,4 +14,4 @@ function loadJSON(path, callback) {
   request.send(null);
 }
 
-export default loadJSON;
+export { loadJSON };
