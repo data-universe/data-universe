@@ -12,13 +12,10 @@ const clock = new Clock();
 const scene = createScene();
 const camera = createCamera();
 const controls = createControls(camera, container);
-const renderer = createRenderer();
-container.appendChild(renderer.domElement);
+const renderer = createRenderer(container);
 
 const planet = createPlanet();
 scene.add(planet);
-
-camera.position.z = 5;
 
 window.addEventListener('resize', resize, false);
 render();

@@ -1,9 +1,10 @@
 import { WebGLRenderer } from 'three/renderers/WebGLRenderer';
 
-function createRenderer() {
+function createRenderer(container) {
   const renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   resizeRenderer(renderer);
+  container.appendChild(renderer.domElement);
   return renderer;
 }
 
