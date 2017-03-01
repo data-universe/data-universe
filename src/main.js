@@ -4,6 +4,7 @@ import { createPlanet } from './planet';
 import { createCamera, resizeCamera } from './camera';
 import { createRenderer, resizeRenderer } from './renderer';
 import { createControls } from './controls';
+import { createStars } from './stars';
 
 const container = document.body;
 
@@ -16,6 +17,9 @@ const renderer = createRenderer(container);
 
 const planet = createPlanet();
 scene.add(planet);
+
+const stars = createStars();
+scene.add(stars);
 
 window.addEventListener('resize', resize, false);
 render();
