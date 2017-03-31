@@ -1,4 +1,5 @@
 import { Clock } from 'three/core/Clock';
+import { loadMockData } from './utils/mock-data';
 import { createScene } from './scene';
 import { createPlanet } from './planet';
 import { createCamera, resizeCamera } from './camera';
@@ -15,15 +16,31 @@ const camera = createCamera();
 const controls = createControls(camera, container);
 const renderer = createRenderer(container);
 
-const planet = createPlanet();
-scene.add(planet);
-
 const stars = createStars();
 scene.add(stars);
 
-window.addEventListener('resize', resize, false);
-render();
+const planets = [];
 
+window.addEventListener('resize', resize, false);
+
+loadMockData((error, data) => {
+  if (!error) {
+    start(data);
+  }
+});
+
+function start(data) {
+  data.forEach((obj) => {
+    const planet = createPlanet();
+    const position = obj.position;
+    position.multiplyScalar(100);
+    planet.position.copy(position);
+    planets.push(planet);
+    scene.add(planet);
+  });
+  camera.lookAt(planets[0].position);
+  render();
+}
 
 function render() {
   requestAnimationFrame(render);
@@ -36,3 +53,4 @@ function resize() {
   resizeCamera(camera);
   resizeRenderer(renderer);
 }
+
