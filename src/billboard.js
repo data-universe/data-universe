@@ -13,4 +13,14 @@ function createBillboard(text) {
   return billboard;
 }
 
-export { createBillboard };
+function updateBillboard(billboard, camera, worldPosition) {
+  if (worldPosition.distanceTo(camera.position) > 40) {
+    billboard.element.style.display = 'none';
+  }
+  else {
+    billboard.quaternion.copy(camera.quaternion);
+    billboard.element.style.display = 'block';
+  }
+}
+
+export { createBillboard, updateBillboard };

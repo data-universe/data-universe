@@ -1,7 +1,7 @@
 import { Clock } from 'three/core/Clock';
 import { loadMockData } from './utils/mock-data';
 import { createScene } from './scene';
-import { createPlanet } from './planet';
+import { createPlanet, updatePlanet } from './planet';
 import { createCamera, resizeCamera } from './camera';
 import { createRenderer, resizeRenderer, createCSSRenderer } from './renderer';
 import { createControls } from './controls';
@@ -45,7 +45,10 @@ function start(data) {
 function render() {
   requestAnimationFrame(render);
   const delta = clock.getDelta();
+
   controls.update(delta);
+  planets.forEach(planet => updatePlanet(planet, camera));
+
   renderer.render(scene, camera);
   cssRenderer.render(scene, camera);
 }
