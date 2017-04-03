@@ -17,6 +17,10 @@ module.exports = {
         test: /FlyControls\.js$/,
         loader: path.resolve(__dirname, 'loaders/fly-controls-loader'),
       },
+      {
+        test: /CSS3DRenderer\.js$/,
+        loader: path.resolve(__dirname, 'loaders/css-3d-object-loader'),
+      },
     ],
   },
   resolve: {
