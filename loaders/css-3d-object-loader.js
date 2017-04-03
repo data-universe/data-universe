@@ -3,12 +3,12 @@ module.exports = function threeLoader(content) {
   return `
     import { Object3D } from 'three/core/Object3D';
     import { Matrix4 } from 'three/math/Matrix4';
-    import { _Math as Math } from 'three/math/Math';
+    import { _Math } from 'three/math/Math';
 
     const THREE = {
       Object3D,
       Matrix4,
-      Math,
+      Math: _Math,
     };
 
     ${content}
