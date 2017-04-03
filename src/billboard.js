@@ -1,3 +1,4 @@
+import { Object3D } from 'three/core/Object3D';
 import { CSS3DObject } from 'three_examples/renderers/CSS3DRenderer';
 
 function createBillboard(text) {
@@ -6,9 +7,14 @@ function createBillboard(text) {
   element.style.display = 'block'; // 'none'; should be the default
   element.textContent = text;
 
-  const billboard = new CSS3DObject(element);
+  const inner = new CSS3DObject(element);
   const scale = 0.01;
-  billboard.scale.set(scale, scale, scale);
+  inner.scale.set(scale, scale, scale);
+  inner.position.set(0, 0.75, 0);
+
+  const billboard = new Object3D();
+  billboard.add(inner);
+  billboard.element = inner.element;
 
   return billboard;
 }

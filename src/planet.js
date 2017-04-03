@@ -16,7 +16,6 @@ function createPlanet(obj) {
   planet.position.multiplyScalar(100);
 
   const billboard = createBillboard(obj.title);
-  billboard.position.set(0, 0.75, 0);
   planet.billboard = billboard;
   planet.add(billboard);
 
