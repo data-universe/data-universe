@@ -10,12 +10,15 @@ const material = new MeshLambertMaterial({
 });
 const geometry = new SphereGeometry(0.5, 32, 16);
 
-function createPlanet() {
+function createPlanet(obj) {
   const planet = new Mesh(geometry, material);
-  const billboard = createBillboard('<h1>foobar</h1>');
-  const node = planet.position;
-  billboard.position.set(node.x, node.y + 0.5, node.z);
+  planet.position.copy(obj.position);
+  planet.position.multiplyScalar(100);
+
+  const billboard = createBillboard(obj.title);
+  billboard.position.set(0, 0.75, 0);
   planet.add(billboard);
+
   return planet;
 }
 

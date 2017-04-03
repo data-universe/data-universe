@@ -1,22 +1,16 @@
 import { CSS3DObject } from 'three_examples/renderers/CSS3DRenderer';
 
-function createBillboard(innerHtml) {
+function createBillboard(text) {
   const element = document.createElement('div');
   element.className = 'billboard';
-  element.addEventListener('click', () => {
-    if (element.style.display === 'none') {
-      element.style.display = 'block';
-    }
-    else {
-      element.style.display = 'none';
-    }
-  });
   element.style.display = 'block'; // 'none'; should be the default
-  element.textContent = innerHtml;
+  element.textContent = text;
 
-  const object = new CSS3DObject(element);
+  const billboard = new CSS3DObject(element);
+  const scale = 0.01;
+  billboard.scale.set(scale, scale, scale);
 
-  return object;
+  return billboard;
 }
 
 export { createBillboard };

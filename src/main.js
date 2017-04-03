@@ -3,7 +3,7 @@ import { loadMockData } from './utils/mock-data';
 import { createScene } from './scene';
 import { createPlanet } from './planet';
 import { createCamera, resizeCamera } from './camera';
-import { createRenderer, resizeRenderer } from './renderer';
+import { createRenderer, resizeRenderer, createCSSRenderer } from './renderer';
 import { createControls } from './controls';
 import { createStars } from './stars';
 
@@ -15,6 +15,7 @@ const scene = createScene();
 const camera = createCamera();
 const controls = createControls(camera, container);
 const renderer = createRenderer(container);
+const cssRenderer = createCSSRenderer(container);
 
 const stars = createStars();
 scene.add(stars);
@@ -31,14 +32,13 @@ loadMockData((error, data) => {
 
 function start(data) {
   data.forEach((obj) => {
-    const planet = createPlanet();
-    const position = obj.position;
-    position.multiplyScalar(100);
-    planet.position.copy(position);
+    const planet = createPlanet(obj);
     planets.push(planet);
     scene.add(planet);
   });
-  camera.lookAt(planets[0].position);
+  const origin = planets[0].position;
+  camera.position.set(origin.x, origin.y, origin.z + 10);
+  camera.lookAt(origin);
   render();
 }
 
@@ -47,10 +47,12 @@ function render() {
   const delta = clock.getDelta();
   controls.update(delta);
   renderer.render(scene, camera);
+  cssRenderer.render(scene, camera);
 }
 
 function resize() {
   resizeCamera(camera);
   resizeRenderer(renderer);
+  resizeRenderer(cssRenderer);
 }
 
