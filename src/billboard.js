@@ -13,8 +13,8 @@ function createBillboard(text) {
   return billboard;
 }
 
-function updateBillboard(billboard, camera, worldPosition) {
-  if (worldPosition.distanceTo(camera.position) > 40) {
+function updateBillboard(billboard, camera) {
+  if (billboard.getWorldPosition().distanceTo(camera.position) > 40) {
     billboard.element.style.display = 'none';
   }
   else {

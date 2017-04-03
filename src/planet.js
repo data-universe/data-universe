@@ -24,7 +24,7 @@ function createPlanet(obj) {
 }
 
 function updatePlanet(planet, camera) {
-  updateBillboard(planet.billboard, camera, planet.position);
+  updateBillboard(planet.billboard, camera);
 }
 
 export { createPlanet, updatePlanet };
