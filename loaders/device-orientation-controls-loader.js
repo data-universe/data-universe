@@ -4,13 +4,13 @@ module.exports = function threeLoader(content) {
     import { Euler } from 'three/math/Euler';
     import { Vector3 } from 'three/math/Vector3';
     import { Quaternion } from 'three/math/Quaternion';
-    import { _Math as Math } from 'three/math/Math';
+    import { _Math } from 'three/math/Math';
 
     const THREE = {
       Euler,
       Vector3,
       Quaternion,
-      Math,
+      Math: _Math
     };
 
     ${content}
