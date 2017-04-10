@@ -3,7 +3,12 @@ import { loadMockData } from './utils/mock-data';
 import { createScene } from './scene';
 import { createPlanet, updatePlanet } from './planet';
 import { createCamera, resizeCamera } from './camera';
-import { createRenderer, resizeRenderer, createCSSRenderer } from './renderer';
+import {
+  createRenderer,
+  resizeRenderer,
+  createCSSRenderer,
+  createStereoEffect,
+} from './renderer';
 import { createControls } from './controls';
 import { createStars } from './stars';
 
@@ -16,6 +21,7 @@ const camera = createCamera();
 const controls = createControls(camera, container);
 const renderer = createRenderer(container);
 const cssRenderer = createCSSRenderer(container);
+const stereoEffect = createStereoEffect(renderer);
 
 const stars = createStars();
 scene.add(stars);
@@ -49,8 +55,8 @@ function render() {
   controls.update(delta);
   planets.forEach(planet => updatePlanet(planet, camera));
 
-  renderer.render(scene, camera);
   cssRenderer.render(scene, camera);
+  stereoEffect.render(scene, camera);
 }
 
 function resize() {
