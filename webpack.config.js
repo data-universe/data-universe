@@ -21,6 +21,14 @@ module.exports = {
         test: /CSS3DRenderer\.js$/,
         loader: path.resolve(__dirname, 'loaders/css-3d-object-loader'),
       },
+      {
+        test: /StereoEffect\.js$/,
+        loader: path.resolve(__dirname, 'loaders/stereo-effect-loader'),
+      },
+      {
+        test: /DeviceOrientationControls\.js$/,
+        loader: path.resolve(__dirname, 'loaders/device-orientation-controls-loader'),
+      },
     ],
   },
   resolve: {
