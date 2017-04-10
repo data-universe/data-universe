@@ -1,22 +1,32 @@
+import { Object3D } from 'three/core/Object3D';
 import { CSS3DObject } from 'three_examples/renderers/CSS3DRenderer';
 
-function createBillboard(innerHtml) {
+function createBillboard(text) {
   const element = document.createElement('div');
   element.className = 'billboard';
-  element.addEventListener('click', () => {
-    if (element.style.display === 'none') {
-      element.style.display = 'block';
-    }
-    else {
-      element.style.display = 'none';
-    }
-  });
   element.style.display = 'block'; // 'none'; should be the default
-  element.textContent = innerHtml;
+  element.textContent = text;
 
-  const object = new CSS3DObject(element);
+  const inner = new CSS3DObject(element);
+  const scale = 0.01;
+  inner.scale.set(scale, scale, scale);
+  inner.position.set(0, 0.75, 0);
 
-  return object;
+  const billboard = new Object3D();
+  billboard.add(inner);
+  billboard.element = inner.element;
+
+  return billboard;
 }
 
-export { createBillboard };
+function updateBillboard(billboard, camera) {
+  if (billboard.getWorldPosition().distanceTo(camera.position) > 40) {
+    billboard.element.style.display = 'none';
+  }
+  else {
+    billboard.quaternion.copy(camera.quaternion);
+    billboard.element.style.display = 'block';
+  }
+}
+
+export { createBillboard, updateBillboard };

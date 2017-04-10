@@ -6,11 +6,6 @@ function createRenderer(container) {
   renderer.setPixelRatio(window.devicePixelRatio);
   resizeRenderer(renderer);
   container.appendChild(renderer.domElement);
-
-  const cssRenderer = new CSS3DRenderer();
-  resizeRenderer(cssRenderer);
-  cssRenderer.domElement.style.position = 'absolute';
-  document.body.appendChild(cssRenderer.domElement);
   return renderer;
 }
 
@@ -18,4 +13,13 @@ function resizeRenderer(renderer) {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-export { createRenderer, resizeRenderer };
+function createCSSRenderer(container) {
+  const cssRenderer = new CSS3DRenderer();
+  resizeRenderer(cssRenderer);
+  cssRenderer.domElement.style.position = 'absolute';
+  cssRenderer.domElement.style.top = '0';
+  container.appendChild(cssRenderer.domElement);
+  return cssRenderer;
+}
+
+export { createRenderer, resizeRenderer, createCSSRenderer };
