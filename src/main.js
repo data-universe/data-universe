@@ -9,7 +9,7 @@ import {
   createCSSRenderer,
   createStereoEffect,
 } from './renderer';
-import { createControls } from './controls';
+import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
 
 const container = document.body;
@@ -18,7 +18,18 @@ const clock = new Clock();
 
 const scene = createScene();
 const camera = createCamera();
-const controls = createControls(camera, container);
+
+let controls = createFlyControls(camera, container);
+function controlsCb(e) {
+  // if alpha parameter exists, device supports gyroscope
+  if (e.alpha) {
+    controls = createVRControls(camera, container);
+  }
+
+  window.removeEventListener('deviceorientation', controlsCb, true);
+}
+window.addEventListener('deviceorientation', controlsCb, true);
+
 const renderer = createRenderer(container);
 const cssRenderer = createCSSRenderer(container);
 const stereoEffect = createStereoEffect(renderer);
