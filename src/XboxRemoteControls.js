@@ -1,8 +1,10 @@
 import { Vector2 } from 'three/math/Vector2';
 
+const joystickMagnitude = 32767.0;
+
 export function XboxRemoteControls(object, remoteUrl) {
   this.object = object;
-  this.movementSpeed = 10.0;
+  this.movementSpeed = 10.0 / joystickMagnitude;
   this.movement = new Vector2(0, 0);
 
   this.controls = {
@@ -28,7 +30,6 @@ export function XboxRemoteControls(object, remoteUrl) {
   this.update = (delta) => {
     const movementMultiplier = delta * this.movementSpeed;
     this.movement.set(this.controls.movement.x, this.controls.movement.y);
-    this.movement.normalize();
     this.movement.multiplyScalar(movementMultiplier);
 
     this.object.translateX(this.movement.x);
