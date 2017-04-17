@@ -4,25 +4,26 @@ const WebSocket = require('ws');
 const xbox = new XboxController();
 const wss = new WebSocket.Server({ port: 8080 });
 
-wss.on('connection', (ws) => {
-  ws.on('message', (message) => {
-    console.log('received: %s', message);
-  });
-
-  console.log('Client connected!');
-});
-
 xbox.on('left:move', (position) => {
   const data = {
     type: 'move',
     x: position.x,
     y: position.y,
   };
-  const message = JSON.stringify(data);
-  broadcast(message);
+  broadcast(data);
 });
 
-function broadcast(message) {
+xbox.on('right:move', (position) => {
+  const data = {
+    type: 'rotate',
+    x: position.x,
+    y: position.y,
+  };
+  broadcast(data);
+});
+
+function broadcast(data) {
+  const message = JSON.stringify(data);
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(message);
