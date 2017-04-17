@@ -4,7 +4,6 @@ import { createScene } from './scene';
 import { createPlanet, updatePlanet } from './planet';
 import { createCamera, resizeCamera } from './camera';
 import { createRenderer, resizeRenderer, createCSSRenderer } from './renderer';
-import { createControls } from './controls';
 import { createStars } from './stars';
 import { XboxRemoteControls } from './XboxRemoteControls';
 
