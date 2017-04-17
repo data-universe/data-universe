@@ -6,15 +6,16 @@ import { createCamera, resizeCamera } from './camera';
 import { createRenderer, resizeRenderer, createCSSRenderer } from './renderer';
 import { createControls } from './controls';
 import { createStars } from './stars';
-import './remote';
+import { XboxRemoteControls } from './XboxRemoteControls';
 
 const container = document.body;
+const remoteUrl = 'ws://localhost:8080';
 
 const clock = new Clock();
 
 const scene = createScene();
 const camera = createCamera();
-const controls = createControls(camera, container);
+const controls = new XboxRemoteControls(camera, remoteUrl);
 const renderer = createRenderer(container);
 const cssRenderer = createCSSRenderer(container);
 
