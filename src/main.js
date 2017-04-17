@@ -6,6 +6,7 @@ import { createCamera, resizeCamera } from './camera';
 import { createRenderer, resizeRenderer, createCSSRenderer } from './renderer';
 import { createControls } from './controls';
 import { createStars } from './stars';
+import './remote';
 
 const container = document.body;
 

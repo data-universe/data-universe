@@ -28,6 +28,8 @@
     "webpack-glsl-loader": "^1.0.1"
   },
   "dependencies": {
-    "three": "^0.84.0"
+    "three": "^0.84.0",
+    "ws": "^2.2.3",
+    "xbox-controller": "^0.7.0"
   }
 }
