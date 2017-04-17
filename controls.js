@@ -6,7 +6,7 @@ const wss = new WebSocket.Server({ port: 8080 });
 
 xbox.on('left:move', (position) => {
   const data = {
-    type: 'move',
+    type: 'left:move',
     x: position.x,
     y: position.y,
   };
@@ -15,9 +15,25 @@ xbox.on('left:move', (position) => {
 
 xbox.on('right:move', (position) => {
   const data = {
-    type: 'rotate',
+    type: 'right:move',
     x: position.x,
     y: position.y,
+  };
+  broadcast(data);
+});
+
+xbox.on('lefttrigger', (position) => {
+  const data = {
+    type: 'lefttrigger',
+    x: position,
+  };
+  broadcast(data);
+});
+
+xbox.on('righttrigger', (position) => {
+  const data = {
+    type: 'righttrigger',
+    x: position,
   };
   broadcast(data);
 });
