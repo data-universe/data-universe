@@ -15,7 +15,6 @@ function createFlyControls(camera, container) {
 function createVRControls(camera, container) {
   const controls = new DeviceOrientationControls(camera, container);
   controls.connect();
-  controls.update();
 
   return controls;
 }

@@ -20,15 +20,15 @@ const scene = createScene();
 const camera = createCamera();
 
 let controls = createFlyControls(camera, container);
-function controlsCb(e) {
+function controlsCallback(e) {
   // if alpha parameter exists, device supports gyroscope
   if (e.alpha) {
     controls = createVRControls(camera, container);
   }
 
-  window.removeEventListener('deviceorientation', controlsCb, true);
+  window.removeEventListener('deviceorientation', controlsCallback, true);
 }
-window.addEventListener('deviceorientation', controlsCb, true);
+window.addEventListener('deviceorientation', controlsCallback, true);
 
 const renderer = createRenderer(container);
 const cssRenderer = createCSSRenderer(container);
