@@ -2,7 +2,7 @@ import { Color } from 'three/math/Color';
 import { MeshLambertMaterial } from 'three/materials/MeshLambertMaterial';
 import { SphereGeometry } from 'three/geometries/SphereGeometry';
 import { Mesh } from 'three/objects/Mesh';
-import { createBillboard, updateBillboard } from './billboard';
+// import { createBillboard, updateBillboard } from './billboard';
 
 const material = new MeshLambertMaterial({
   color: (new Color()).setHSL(0.5, 1.0, 0.5),
@@ -15,15 +15,15 @@ function createPlanet(obj) {
   planet.position.copy(obj.position);
   planet.position.multiplyScalar(100);
 
-  const billboard = createBillboard(obj.title);
-  planet.billboard = billboard;
-  planet.add(billboard);
+  // const billboard = createBillboard(obj.title);
+  // planet.billboard = billboard;
+  // planet.add(billboard);
 
   return planet;
 }
 
-function updatePlanet(planet, camera) {
-  updateBillboard(planet.billboard, camera);
+function updatePlanet(/* planet, camera */) {
+  // updateBillboard(planet.billboard, camera);
 }
 
 export { createPlanet, updatePlanet };
