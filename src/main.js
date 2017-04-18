@@ -3,20 +3,39 @@ import { loadMockData } from './utils/mock-data';
 import { createScene } from './scene';
 import { createPlanet, updatePlanet } from './planet';
 import { createCamera, resizeCamera } from './camera';
-import { createRenderer, resizeRenderer, createCSSRenderer } from './renderer';
+import {
+  createRenderer,
+  resizeRenderer,
+  createCSSRenderer,
+  createStereoEffect,
+} from './renderer';
+import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
 import { XboxRemoteControls } from './XboxRemoteControls';
 
 const container = document.body;
-const remoteUrl = 'ws://localhost:8080';
+const remoteUrl = `ws://${window.location.hostname}:8081`;
 
 const clock = new Clock();
 
 const scene = createScene();
 const camera = createCamera();
-const controls = new XboxRemoteControls(camera, remoteUrl);
+
+const xboxControls = new XboxRemoteControls(camera, remoteUrl);
+let controls = createFlyControls(camera, container);
+function controlsCallback(e) {
+  // if alpha parameter exists, device supports gyroscope
+  if (e.alpha) {
+    controls = createVRControls(camera, container);
+  }
+
+  window.removeEventListener('deviceorientation', controlsCallback, true);
+}
+window.addEventListener('deviceorientation', controlsCallback, true);
+
 const renderer = createRenderer(container);
 const cssRenderer = createCSSRenderer(container);
+const stereoEffect = createStereoEffect(renderer);
 
 const stars = createStars();
 scene.add(stars);
@@ -47,11 +66,12 @@ function render() {
   requestAnimationFrame(render);
   const delta = clock.getDelta();
 
+  xboxControls.update(delta);
   controls.update(delta);
   planets.forEach(planet => updatePlanet(planet, camera));
 
-  renderer.render(scene, camera);
   cssRenderer.render(scene, camera);
+  stereoEffect.render(scene, camera);
 }
 
 function resize() {

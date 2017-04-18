@@ -59,10 +59,10 @@ export function XboxRemoteControls(object, remoteUrl) {
     this.object.translateY(this.movement.y);
     this.object.translateZ(this.movement.z);
 
-    const rotationMultiplier = (delta * this.rotationSpeed) / joystickMagnitude;
-    this.rotation.set(this.controls.rotation.x, this.controls.rotation.y);
-    this.rotation.multiplyScalar(rotationMultiplier);
-    this.rotationQuaternion.set(-this.rotation.y, -this.rotation.x, 0, 1);
-    this.object.quaternion.multiply(this.rotationQuaternion);
+    // const rotationMultiplier = (delta * this.rotationSpeed) / joystickMagnitude;
+    // this.rotation.set(this.controls.rotation.x, this.controls.rotation.y);
+    // this.rotation.multiplyScalar(rotationMultiplier);
+    // this.rotationQuaternion.set(-this.rotation.y, -this.rotation.x, 0, 1);
+    // this.object.quaternion.multiply(this.rotationQuaternion);
   };
 }

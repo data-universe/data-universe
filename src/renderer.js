@@ -1,5 +1,6 @@
 import { WebGLRenderer } from 'three/renderers/WebGLRenderer';
 import { CSS3DRenderer } from 'three_examples/renderers/CSS3DRenderer';
+import { StereoEffect } from 'three_examples/effects/StereoEffect';
 
 function createRenderer(container) {
   const renderer = new WebGLRenderer();
@@ -22,4 +23,13 @@ function createCSSRenderer(container) {
   return cssRenderer;
 }
 
-export { createRenderer, resizeRenderer, createCSSRenderer };
+function createStereoEffect(renderer) {
+  return new StereoEffect(renderer);
+}
+
+export {
+  createRenderer,
+  resizeRenderer,
+  createCSSRenderer,
+  createStereoEffect,
+};
