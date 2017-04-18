@@ -11,14 +11,17 @@ import {
 } from './renderer';
 import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
+import { XboxRemoteControls } from './XboxRemoteControls';
 
 const container = document.body;
+const remoteUrl = `ws://${window.location.hostname}:8081`;
 
 const clock = new Clock();
 
 const scene = createScene();
 const camera = createCamera();
 
+const xboxControls = new XboxRemoteControls(camera, remoteUrl);
 let controls = createFlyControls(camera, container);
 function controlsCallback(e) {
   // if alpha parameter exists, device supports gyroscope
@@ -63,6 +66,7 @@ function render() {
   requestAnimationFrame(render);
   const delta = clock.getDelta();
 
+  xboxControls.update(delta);
   controls.update(delta);
   planets.forEach(planet => updatePlanet(planet, camera));
 
