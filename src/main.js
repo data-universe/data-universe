@@ -3,8 +3,13 @@ import { loadMockData } from './utils/mock-data';
 import { createScene } from './scene';
 import { createPlanet, updatePlanet } from './planet';
 import { createCamera, resizeCamera } from './camera';
-import { createRenderer, resizeRenderer, createCSSRenderer } from './renderer';
-import { createControls } from './controls';
+import {
+  createRenderer,
+  resizeRenderer,
+  createCSSRenderer,
+  createStereoEffect,
+} from './renderer';
+import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
 
 const container = document.body;
@@ -13,9 +18,21 @@ const clock = new Clock();
 
 const scene = createScene();
 const camera = createCamera();
-const controls = createControls(camera, container);
+
+let controls = createFlyControls(camera, container);
+function controlsCallback(e) {
+  // if alpha parameter exists, device supports gyroscope
+  if (e.alpha) {
+    controls = createVRControls(camera, container);
+  }
+
+  window.removeEventListener('deviceorientation', controlsCallback, true);
+}
+window.addEventListener('deviceorientation', controlsCallback, true);
+
 const renderer = createRenderer(container);
 const cssRenderer = createCSSRenderer(container);
+const stereoEffect = createStereoEffect(renderer);
 
 const stars = createStars();
 scene.add(stars);
@@ -49,8 +66,8 @@ function render() {
   controls.update(delta);
   planets.forEach(planet => updatePlanet(planet, camera));
 
-  renderer.render(scene, camera);
   cssRenderer.render(scene, camera);
+  stereoEffect.render(scene, camera);
 }
 
 function resize() {

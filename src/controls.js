@@ -1,6 +1,7 @@
 import { FlyControls } from 'three_examples/controls/FlyControls';
+import { DeviceOrientationControls } from 'three_examples/controls/DeviceOrientationControls';
 
-function createControls(camera, container) {
+function createFlyControls(camera, container) {
   const controls = new FlyControls(camera, container);
 
   controls.movementSpeed = 2.0;
@@ -11,4 +12,11 @@ function createControls(camera, container) {
   return controls;
 }
 
-export { createControls };
+function createVRControls(camera, container) {
+  const controls = new DeviceOrientationControls(camera, container);
+  controls.connect();
+
+  return controls;
+}
+
+export { createFlyControls, createVRControls };
