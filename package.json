@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "node_modules/.bin/webpack",
-    "start": "node_modules/.bin/webpack-dev-server --host 0.0.0.0 --port 8080 --open"
+    "start": "node_modules/.bin/webpack-dev-server -d --host 0.0.0.0 --port 8080 --open"
   },
   "homepage": "https://github.com/marcusrettig/data-universe#readme",
   "devDependencies": {
