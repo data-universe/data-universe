@@ -3,21 +3,20 @@ import { Texture } from 'three/textures/Texture';
 import { SpriteMaterial } from 'three/materials/SpriteMaterial';
 import { Sprite } from 'three/objects/Sprite';
 
-function createBillboard(text) {
+export function createBillboard(text) {
   const billboard = new Object3D();
   const sprite = createSprite(text);
-  sprite.position.set(0, 0.65, 0);
+  sprite.position.set(0, 1 + 0.15, 0);
   billboard.add(sprite);
   return billboard;
 }
 
-function updateBillboard(billboard, camera) {
+export function updateBillboard(billboard, camera) {
   billboard.quaternion.copy(camera.quaternion);
 }
 
 function createSprite(text) {
-  const canvas = createCanvas(text);
-  const texture = new Texture(canvas);
+  const texture = createTexture(text);
   texture.needsUpdate = true;
 
   const material = new SpriteMaterial({ map: texture });
@@ -25,39 +24,70 @@ function createSprite(text) {
   return sprite;
 }
 
-function createCanvas(text) {
-  const fontface = 'Arial';
-  const fontsize = 24;
+function createTexture(text) {
+  // These constants can be tweaked to change the styling.
+  const fontFace = 'Arial';
+  const fontSize = 24;
   const backgroundColor = 'rgba(50,75,75,0.5)';
   const textColor = 'rgba(255,255,255,0.75)';
-  const borderColor = 'rgba(160,255,255,0.25)';
   const padding = 10;
-  const width = 256;
-  const height = 100;
-  const contentWidth = width - (2 * padding);
-  const contentHeight = height - (2 * padding);
+  const boxWidth = 256; // Must be a power of 2.
+  const lineHeight = 1.4 * fontSize;
+  // Removes some height from the bottom of the box to make the text look more centered.
+  const heightReduction = 0.1 * fontSize;
 
+  // Setup Canvas
   const canvas = document.createElement('canvas');
-  canvas.width = 256;
-  canvas.height = 256;
+  canvas.width = boxWidth;
+  canvas.height = boxWidth;
   const context = canvas.getContext('2d');
+  context.font = `Normal ${fontSize}px ${fontFace}`;
 
+  // Calculate properties and wrap text
+  const contentWidth = boxWidth - (2 * padding);
+  const lines = wrapText(context, text, contentWidth);
+  const contentHeight = (lines.length * lineHeight) - heightReduction;
+  const boxHeight = contentHeight + (2 * padding);
+  const yOffset = canvas.height - boxHeight;
+
+  // Render box.
   context.fillStyle = backgroundColor;
-  context.strokeStyle = borderColor;
-  context.lineWidth = 0;
+  context.fillRect(0, yOffset, boxWidth, boxHeight);
 
-  // Box
-  context.fillRect(0, 0, width, height);
-
-  // Text
-  context.font = `Normal ${fontsize}px ${fontface}`;
+  // Render text.
   context.fillStyle = textColor;
-  context.textBaseline = 'middle';
-  const textPositionX = padding;
-  const textPositionY = height / 2;
-  context.fillText(text, textPositionX, textPositionY, contentWidth);
+  context.textBaseline = 'top';
+  lines.forEach((line, i) => {
+    const lineWidth = context.measureText(line).width;
+    const lineX = padding + ((contentWidth - lineWidth) / 2);
+    const lineY = padding + (i * lineHeight) + yOffset;
+    context.fillText(line, lineX, lineY, contentWidth);
+  });
 
-  return canvas;
+  return new Texture(canvas);
 }
 
-export { createBillboard, updateBillboard };
+function wrapText(context, text, maxWidth) {
+  const words = text.split(' ');
+  if (words.length <= 1) {
+    return [text];
+  }
+
+  const lines = [];
+  let line = words[0];
+
+  for (let i = 1; i < words.length; i += 1) {
+    const word = words[i];
+    const testLine = `${line} ${word}`;
+    const testWidth = context.measureText(testLine).width;
+    if (testWidth >= maxWidth) {
+      lines.push(line);
+      line = word;
+    }
+    else {
+      line = testLine;
+    }
+  }
+  lines.push(line);
+  return lines;
+}
