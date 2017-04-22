@@ -19,7 +19,7 @@ function createSprite(text) {
   const texture = createTexture(text);
   texture.needsUpdate = true;
 
-  const material = new SpriteMaterial({ map: texture });
+  const material = new SpriteMaterial({ map: texture, fog: true });
   const sprite = new Sprite(material);
   return sprite;
 }
