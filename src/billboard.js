@@ -3,10 +3,11 @@ import { Texture } from 'three/textures/Texture';
 import { SpriteMaterial } from 'three/materials/SpriteMaterial';
 import { Sprite } from 'three/objects/Sprite';
 
-export function createBillboard(text) {
+export function createBillboard(text, height) {
   const billboard = new Object3D();
   const sprite = createSprite(text);
-  sprite.position.set(0, 1 + 0.15, 0);
+  const y = height + 0.5;
+  sprite.position.set(0, y, 0);
   billboard.add(sprite);
   return billboard;
 }
