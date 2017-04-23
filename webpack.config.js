@@ -18,10 +18,6 @@ module.exports = {
         loader: path.resolve(__dirname, 'loaders/fly-controls-loader'),
       },
       {
-        test: /CSS3DRenderer\.js$/,
-        loader: path.resolve(__dirname, 'loaders/css-3d-object-loader'),
-      },
-      {
         test: /StereoEffect\.js$/,
         loader: path.resolve(__dirname, 'loaders/stereo-effect-loader'),
       },
