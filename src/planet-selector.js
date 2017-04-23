@@ -8,6 +8,7 @@ class PlanetSelector {
     this.timer = 0;
     this.selected = new Set();
     this.timeLimit = 3;
+    this.selectionDistance = 25;
   }
 
   update(camera, delta, scene) {
@@ -16,7 +17,9 @@ class PlanetSelector {
     const temp = this.raycaster.intersectObjects(scene.children)[0];
     let current;
     if (temp !== undefined) {
-      current = temp.object;
+      if (temp.object.position.distanceTo(camera.position) < this.selectionDistance) {
+        current = temp.object;
+      }
     }
 
     if (current === this.lastIntersect) {
@@ -32,7 +35,6 @@ class PlanetSelector {
       }
       this.timer = 0;
     }
-
 
     this.lastIntersect = current;
   }
