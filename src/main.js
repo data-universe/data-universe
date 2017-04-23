@@ -12,6 +12,7 @@ import {
 import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
 import { XboxRemoteControls } from './XboxRemoteControls';
+import { PlanetSelector } from './planet-selector';
 
 const container = document.body;
 const remoteUrl = `ws://${window.location.hostname}:8081`;
@@ -36,6 +37,7 @@ window.addEventListener('deviceorientation', controlsCallback, true);
 const renderer = createRenderer(container);
 const cssRenderer = createCSSRenderer(container);
 const stereoEffect = createStereoEffect(renderer);
+const planetSelector = new PlanetSelector();
 
 const stars = createStars();
 scene.add(stars);
@@ -67,6 +69,7 @@ function render() {
   const delta = clock.getDelta();
 
   xboxControls.update(delta);
+  planetSelector.update(camera, delta, scene);
   controls.update(delta);
   planets.forEach(planet => updatePlanet(planet, camera));
 

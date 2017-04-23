@@ -5,24 +5,36 @@ class PlanetSelector {
   constructor() {
     this.raycaster = new Raycaster();
     this.lastIntersect = null;
-    this.counter = 0;
+    this.timer = 0;
     this.selected = new Set();
+    this.timeLimit = 3;
   }
 
-  update(camera, scene) {
+  update(camera, delta, scene) {
     const point = new Vector2(camera.getWorldDirection.x, camera.getWorldDirection.y);
     this.raycaster.setFromCamera(point, camera);
-    const current = this.raycaster.intersectObjects(scene.children)[0];
-    if (current && current === this.lastIntersect) {
-      this.counter += 1;
-    }
-    else {
-      this.lastIntersect = current;
+    const temp = this.raycaster.intersectObjects(scene.children)[0];
+    let current;
+    if (temp !== undefined) {
+      current = temp.object;
     }
 
-    if (this.current && this.counter > 42) {
-      this.selected.push(this.current);
+    if (current === this.lastIntersect) {
+      this.timer += delta;
     }
+    else if (current !== this.lastIntersect) {
+      this.timer = 0;
+    }
+
+    if (this.timer > this.timeLimit) {
+      if (current !== undefined) {
+        this.selected.add(this.lastIntersect);
+      }
+      this.timer = 0;
+    }
+
+
+    this.lastIntersect = current;
   }
 }
 
