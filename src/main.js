@@ -6,7 +6,6 @@ import { createCamera, resizeCamera } from './camera';
 import {
   createRenderer,
   resizeRenderer,
-  createCSSRenderer,
   createStereoEffect,
 } from './renderer';
 import { createFlyControls, createVRControls } from './controls';
@@ -35,7 +34,6 @@ function controlsCallback(e) {
 window.addEventListener('deviceorientation', controlsCallback, true);
 
 const renderer = createRenderer(container);
-const cssRenderer = createCSSRenderer(container);
 const stereoEffect = createStereoEffect(renderer);
 const planetSelector = new PlanetSelector();
 
@@ -73,13 +71,11 @@ function render() {
   controls.update(delta);
   planets.forEach(planet => updatePlanet(planet, camera));
 
-  cssRenderer.render(scene, camera);
   stereoEffect.render(scene, camera);
 }
 
 function resize() {
   resizeCamera(camera);
   resizeRenderer(renderer);
-  resizeRenderer(cssRenderer);
 }
 
