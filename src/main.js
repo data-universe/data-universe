@@ -51,13 +51,13 @@ loadMockData((error, data) => {
 });
 
 function start(data) {
-  data.forEach((obj) => {
-    const planet = createPlanet(obj);
+  data.forEach((item) => {
+    const planet = createPlanet(item);
     planets.push(planet);
     scene.add(planet);
   });
-  const origin = planets[0].position;
-  camera.position.set(origin.x, origin.y, origin.z + 10);
+  const origin = planets[96].position;
+  camera.position.set(-100, 70, 30);
   camera.lookAt(origin);
   render();
 }
