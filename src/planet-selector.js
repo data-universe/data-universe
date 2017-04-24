@@ -4,7 +4,7 @@ import { Vector2 } from 'three/math/Vector2';
 class PlanetSelector {
   constructor() {
     this.raycaster = new Raycaster();
-    this.lastIntersect = null;
+    this.lastIntersection = null;
     this.timer = 0;
     this.selected = new Set();
     this.timeLimit = 3;
@@ -12,31 +12,31 @@ class PlanetSelector {
   }
 
   update(camera, delta, scene) {
-    const point = new Vector2(camera.getWorldDirection.x, camera.getWorldDirection.y);
-    this.raycaster.setFromCamera(point, camera);
-    const temp = this.raycaster.intersectObjects(scene.children)[0];
-    let current;
-    if (temp !== undefined) {
-      if (temp.object.position.distanceTo(camera.position) < this.selectionDistance) {
-        current = temp.object;
+    const cameraDirection = new Vector2(camera.getWorldDirection.x, camera.getWorldDirection.y);
+    this.raycaster.setFromCamera(cameraDirection, camera);
+    const tempPlanet = this.raycaster.intersectObjects(scene.children)[0];
+    let currentPlanet;
+    if (tempPlanet !== undefined) {
+      if (tempPlanet.object.position.distanceTo(camera.position) < this.selectionDistance) {
+        currentPlanet = tempPlanet.object;
       }
     }
 
-    if (current === this.lastIntersect) {
+    if (currentPlanet === this.lastIntersection) {
       this.timer += delta;
     }
-    else if (current !== this.lastIntersect) {
+    else if (currentPlanet !== this.lastIntersection) {
       this.timer = 0;
     }
 
     if (this.timer > this.timeLimit) {
-      if (current !== undefined) {
-        this.selected.add(this.lastIntersect);
+      if (currentPlanet !== undefined) {
+        this.selected.add(this.lastIntersection);
       }
       this.timer = 0;
     }
 
-    this.lastIntersect = current;
+    this.lastIntersecion = currentPlanet;
   }
 }
 
