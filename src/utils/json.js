@@ -1,4 +1,4 @@
-function loadJSON(path, callback) {
+export function loadJSON(path, callback) {
   const request = new XMLHttpRequest();
   request.overrideMimeType('application/json');
   request.open('GET', path, true);
@@ -6,12 +6,11 @@ function loadJSON(path, callback) {
     if (request.status === 200) {
       const json = JSON.parse(request.responseText);
       callback(undefined, json);
-    } else {
+    }
+    else {
       const error = `Error ${request.status} loading ${path}`;
       callback(error, undefined);
     }
   };
   request.send(null);
 }
-
-export { loadJSON };

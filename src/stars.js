@@ -6,7 +6,7 @@ import { Points } from 'three/objects/Points';
 
 const radius = 6371;
 
-function createStars() {
+export function createStars() {
   const stars = new Object3D();
   const geometry = [createGeometry(250), createGeometry(1500)];
   const materials = createMaterials();
@@ -53,5 +53,3 @@ function createMaterials() {
     new PointsMaterial({ color: 0x1a1a1a, size: 1, sizeAttenuation: false, fog: false }),
   ];
 }
-
-export { createStars };

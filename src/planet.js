@@ -14,6 +14,8 @@ export function createPlanet(data) {
   const planet = new Mesh(geometry, material);
   planet.position.copy(data.position);
   planet.position.multiplyScalar(100);
+  planet.data = data;
+  planet.isPlanet = true;
 
   const radius = geometry.parameters.radius;
   const billboardHeight = radius + 0.15;

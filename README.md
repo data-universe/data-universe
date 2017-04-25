@@ -10,4 +10,4 @@
 
 `node controls-server.js` runs the Xbox control server, the webpack instance must be running before this starts.
 
-Connect your phone with Safari or Chrome to port 8080 (if your firewall does not allow this setup a Wifi hostop with another phone).
+Connect your phone with Safari or Chrome to port 8080 (if your firewall does not allow this setup a Wifi hotspot with another phone).

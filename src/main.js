@@ -11,20 +11,27 @@ import {
 import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
 import { XboxRemoteControls } from './XboxRemoteControls';
-import { PlanetSelector } from './planet-selector';
+import { Selector, selectOnKeyPress } from './selector';
 import { createCrosshair } from './crosshair';
 
+// ---
+// Miscellaneous initialization
+// ---
 const container = document.body;
 const remoteUrl = `ws://${window.location.hostname}:8081`;
 
 const clock = new Clock();
+const socket = new window.WebSocket(remoteUrl);
 
+// ---
+// Three.js initialization
+// ---
 const scene = createScene();
 const camera = createCamera();
 // Needed to render UI components attatched to camera
 scene.add(camera);
 
-const xboxControls = new XboxRemoteControls(camera, remoteUrl);
+const xboxControls = new XboxRemoteControls(camera, socket);
 let controls = createFlyControls(camera, container);
 function controlsCallback(e) {
   // if alpha parameter exists, device supports gyroscope
@@ -38,25 +45,34 @@ window.addEventListener('deviceorientation', controlsCallback, true);
 
 const renderer = createRenderer(container);
 const stereoEffect = createStereoEffect(renderer);
-const planetSelector = new PlanetSelector();
+const selector = new Selector();
+window.addEventListener('keypress', event => selectOnKeyPress(event, selector, socket));
 
+function resize() {
+  resizeCamera(camera);
+  resizeRenderer(renderer);
+}
+window.addEventListener('resize', resize, false);
+
+// ---
+// Create scene
+// ---
 const stars = createStars();
 scene.add(stars);
 
 const crosshair = createCrosshair();
-crosshair.position.set(0, 0, -5);
 camera.add(crosshair);
 
 const planets = [];
-
-window.addEventListener('resize', resize, false);
-
 loadMockData((error, data) => {
   if (!error) {
     start(data);
   }
 });
 
+// ---
+// Start the game loop
+// ---
 function start(data) {
   data.forEach((item) => {
     const planet = createPlanet(item);
@@ -69,20 +85,15 @@ function start(data) {
   render();
 }
 
+// render() is looped
 function render() {
   requestAnimationFrame(render);
   const delta = clock.getDelta();
 
   xboxControls.update(delta);
-  planetSelector.update(camera, delta, scene);
+  selector.update(camera, delta, scene);
   controls.update(delta);
   planets.forEach(planet => updatePlanet(planet, camera));
 
   stereoEffect.render(scene, camera);
 }
-
-function resize() {
-  resizeCamera(camera);
-  resizeRenderer(renderer);
-}
-
