@@ -9,6 +9,7 @@ export function createBillboard(text, height) {
   const y = height + 0.5;
   sprite.position.set(0, y, 0);
   billboard.add(sprite);
+  billboard.isBillboard = true;
   return billboard;
 }
 
