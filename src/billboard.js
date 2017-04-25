@@ -80,7 +80,7 @@ function wrapText(context, text, subtext, maxWidth) {
   wordsToLines(words);
 
   function wordsToLines(w) {
-    for (let i = 1; i < words.length; i += 1) {
+    for (let i = 1; i < w.length; i += 1) {
       const word = w[i];
       const testLine = `${line} ${word}`;
       const testWidth = context.measureText(testLine).width;
