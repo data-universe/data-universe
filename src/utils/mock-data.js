@@ -15,9 +15,10 @@ function loadMockData(callback) {
 
 function extract(obj) {
   const pos = obj.vektor;
+  const rubrik = obj.rubrik.charAt(0).toUpperCase() + obj.rubrik.slice(1);
   return {
     id: obj.annonsid,
-    title: obj.rubrik,
+    title: rubrik,
     position: new Vector3(pos[0], pos[1], pos[2]),
   };
 }
