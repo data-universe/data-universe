@@ -27,13 +27,13 @@ export class Selector {
   }
 }
 
-export function selectOnKeyPress(event) {
+export function selectOnKeyPress(event, selector, socket) {
   if (event.code === 'Space') {
-    selectItem();
+    selectItem(selector, socket);
   }
 }
 
-function selectItem(selector) {
+function selectItem(selector, socket) {
   const selected = selector.selected;
   let data;
   if (selected) {
@@ -44,7 +44,7 @@ function selectItem(selector) {
       data = selected.parent.data;
     }
   }
-  sendToServer({
+  sendToServer(socket, {
     type: 'selected',
     data,
   });
