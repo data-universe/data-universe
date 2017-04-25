@@ -12,6 +12,7 @@ import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
 import { XboxRemoteControls } from './XboxRemoteControls';
 import { PlanetSelector } from './planet-selector';
+import { createCrosshair } from './crosshair';
 
 const container = document.body;
 const remoteUrl = `ws://${window.location.hostname}:8081`;
@@ -20,6 +21,8 @@ const clock = new Clock();
 
 const scene = createScene();
 const camera = createCamera();
+// Needed to render UI components attatched to camera
+scene.add(camera);
 
 const xboxControls = new XboxRemoteControls(camera, remoteUrl);
 let controls = createFlyControls(camera, container);
@@ -39,6 +42,10 @@ const planetSelector = new PlanetSelector();
 
 const stars = createStars();
 scene.add(stars);
+
+const crosshair = createCrosshair();
+crosshair.position.set(0, 0, -5);
+camera.add(crosshair);
 
 const planets = [];
 
