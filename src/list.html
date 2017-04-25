@@ -4,6 +4,36 @@
   <title>Selected Data</title>
 </head>
 <body>
-Hello World
+
+<ul id="dataList"></ul>
+
+<script type="text/javascript">
+
+const remoteUrl = `ws://${window.location.hostname}:8081`;
+const socket = new window.WebSocket(remoteUrl);
+
+const list = document.getElementById('dataList');
+
+socket.onmessage = (event) => {
+  const message = JSON.parse(event.data);
+  switch (message.type) {
+    case 'selected':
+      addToList(message.data);
+      break;
+    default:
+      break;
+  }
+};
+
+function addToList(data) {
+  if (data && data.title) {
+    const item = document.createElement('li');
+    const text = document.createTextNode(data.title);
+    item.appendChild(text);
+    list.appendChild(item);
+  }
+}
+
+</script>
 </body>
 </html>
