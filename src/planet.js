@@ -17,7 +17,7 @@ export function createPlanet(data) {
 
   const radius = geometry.parameters.radius;
   const billboardHeight = radius + 0.15;
-  const billboard = createBillboard(data.title, billboardHeight);
+  const billboard = createBillboard(data.title, data.occupation, billboardHeight);
   planet.billboard = billboard;
   planet.add(billboard);
 

@@ -3,9 +3,9 @@ import { Texture } from 'three/textures/Texture';
 import { SpriteMaterial } from 'three/materials/SpriteMaterial';
 import { Sprite } from 'three/objects/Sprite';
 
-export function createBillboard(text, height) {
+export function createBillboard(text, subtext, height) {
   const billboard = new Object3D();
-  const sprite = createSprite(text);
+  const sprite = createSprite(text, subtext);
   const y = height + 0.5;
   sprite.position.set(0, y, 0);
   billboard.add(sprite);
@@ -16,8 +16,8 @@ export function updateBillboard(billboard, camera) {
   billboard.quaternion.copy(camera.quaternion);
 }
 
-function createSprite(text) {
-  const texture = createTexture(text);
+function createSprite(text, subtext) {
+  const texture = createTexture(text, subtext);
   texture.needsUpdate = true;
 
   const material = new SpriteMaterial({ map: texture, fog: true });
@@ -25,7 +25,7 @@ function createSprite(text) {
   return sprite;
 }
 
-function createTexture(text) {
+function createTexture(text, subtext) {
   // These constants can be tweaked to change the styling.
   const fontFace = 'Arial';
   const fontSize = 24;
@@ -46,7 +46,7 @@ function createTexture(text) {
 
   // Calculate properties and wrap text
   const contentWidth = boxWidth - (2 * padding);
-  const lines = wrapText(context, text, contentWidth);
+  const lines = wrapText(context, text, subtext, contentWidth);
   const contentHeight = (lines.length * lineHeight) - heightReduction;
   const boxHeight = contentHeight + (2 * padding);
   const yOffset = canvas.height - boxHeight;
@@ -68,27 +68,41 @@ function createTexture(text) {
   return new Texture(canvas);
 }
 
-function wrapText(context, text, maxWidth) {
+function wrapText(context, text, subtext, maxWidth) {
   const words = text.split(' ');
   if (words.length <= 1) {
     return [text];
   }
-
   const lines = [];
   let line = words[0];
 
-  for (let i = 1; i < words.length; i += 1) {
-    const word = words[i];
-    const testLine = `${line} ${word}`;
-    const testWidth = context.measureText(testLine).width;
-    if (testWidth >= maxWidth) {
-      lines.push(line);
-      line = word;
+  wordsToLines(words);
+
+  function wordsToLines(w) {
+    for (let i = 1; i < words.length; i += 1) {
+      const word = w[i];
+      const testLine = `${line} ${word}`;
+      const testWidth = context.measureText(testLine).width;
+      if (testWidth >= maxWidth) {
+        lines.push(line);
+        line = word;
+      }
+      else {
+        line = testLine;
+      }
     }
-    else {
-      line = testLine;
-    }
+    lines.push(line);
   }
-  lines.push(line);
+
+  const subwords = subtext.split(' ');
+  lines.push('------------------');
+  if (subwords.length <= 1) {
+    lines.push(subtext);
+  }
+  else {
+    line = subwords[0];
+    wordsToLines(subwords);
+  }
+
   return lines;
 }

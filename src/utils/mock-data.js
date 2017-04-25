@@ -19,6 +19,7 @@ function extract(obj) {
   return {
     id: obj.annonsid,
     title: rubrik,
+    occupation: obj.yrke,
     position: new Vector3(pos[0], pos[1], pos[2]),
   };
 }
