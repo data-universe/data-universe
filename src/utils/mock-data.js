@@ -1,7 +1,7 @@
 import { Vector3 } from 'three/math/Vector3';
 import { loadJSON } from './json';
 
-function loadMockData(callback) {
+export function loadMockData(callback) {
   loadJSON('assets/100.json', (error, data) => {
     if (!error) {
       const mockData = data.map(extract);
@@ -22,5 +22,3 @@ function extract(obj) {
     position: new Vector3(pos[0], pos[1], pos[2]),
   };
 }
-
-export { loadMockData };

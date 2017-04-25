@@ -1,7 +1,7 @@
 import { WebGLRenderer } from 'three/renderers/WebGLRenderer';
 import { StereoEffect } from 'three_examples/effects/StereoEffect';
 
-function createRenderer(container) {
+export function createRenderer(container) {
   const renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   resizeRenderer(renderer);
@@ -9,16 +9,10 @@ function createRenderer(container) {
   return renderer;
 }
 
-function resizeRenderer(renderer) {
+export function resizeRenderer(renderer) {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function createStereoEffect(renderer) {
+export function createStereoEffect(renderer) {
   return new StereoEffect(renderer);
 }
-
-export {
-  createRenderer,
-  resizeRenderer,
-  createStereoEffect,
-};

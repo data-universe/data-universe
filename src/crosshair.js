@@ -23,6 +23,7 @@ export function createCrosshair() {
   geometry.vertices.push(new Vector3(width, 0, 0));
 
   const cross = new LineSegments(geometry, material);
+  cross.position.set(0, 0, -5);
 
   return cross;
 }

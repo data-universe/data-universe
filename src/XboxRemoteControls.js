@@ -24,22 +24,22 @@ export function XboxRemoteControls(object, socket) {
 
   socket.onopen = () => {};
 
-  socket.onmessage = (message) => {
-    const data = JSON.parse(message.data);
-    switch (data.type) {
+  socket.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+    switch (message.type) {
       case 'left:move':
-        this.controls.movement.x = data.x;
-        this.controls.movement.y = data.y;
+        this.controls.movement.x = message.x;
+        this.controls.movement.y = message.y;
         break;
       case 'right:move':
-        this.controls.rotation.x = data.x;
-        this.controls.rotation.y = data.y;
+        this.controls.rotation.x = message.x;
+        this.controls.rotation.y = message.y;
         break;
       case 'righttrigger':
-        this.controls.elevate.up = data.x;
+        this.controls.elevate.up = message.x;
         break;
       case 'lefttrigger':
-        this.controls.elevate.down = data.x;
+        this.controls.elevate.down = message.x;
         break;
       default:
         break;
