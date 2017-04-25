@@ -1,7 +1,7 @@
 import { Raycaster } from 'three/core/Raycaster';
 import { Vector2 } from 'three/math/Vector2';
 
-class Selector {
+export class Selector {
   constructor() {
     this.raycaster = new Raycaster();
     this.selectionDistance = 30;
@@ -27,4 +27,30 @@ class Selector {
   }
 }
 
-export { Selector };
+export function selectOnKeyPress(event) {
+  if (event.code === 'Space') {
+    selectItem();
+  }
+}
+
+function selectItem(selector) {
+  const selected = selector.selected;
+  let data;
+  if (selected) {
+    if (selected.isPlanet) {
+      data = selected.data;
+    }
+    else if (selected.isBillboard && selected.parent) {
+      data = selected.parent.data;
+    }
+  }
+  sendToServer({
+    type: 'selected',
+    data,
+  });
+}
+
+function sendToServer(socket, data) {
+  const message = JSON.stringify(data);
+  socket.send(message);
+}

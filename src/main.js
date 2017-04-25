@@ -11,7 +11,7 @@ import {
 import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
 import { XboxRemoteControls } from './XboxRemoteControls';
-import { Selector } from './selector';
+import { Selector, selectOnKeyPress } from './selector';
 import { createCrosshair } from './crosshair';
 
 const container = document.body;
@@ -51,7 +51,7 @@ camera.add(crosshair);
 const planets = [];
 
 window.addEventListener('resize', resize, false);
-window.addEventListener('keypress', onKeyPress);
+window.addEventListener('keypress', selectOnKeyPress);
 
 loadMockData((error, data) => {
   if (!error) {
@@ -86,32 +86,4 @@ function render() {
 function resize() {
   resizeCamera(camera);
   resizeRenderer(renderer);
-}
-
-function onKeyPress(event) {
-  if (event.code === 'Space') {
-    selectItem();
-  }
-}
-
-function selectItem() {
-  const selected = selector.selected;
-  let data;
-  if (selected) {
-    if (selected.isPlanet) {
-      data = selected.data;
-    }
-    else if (selected.isBillboard && selected.parent) {
-      data = selected.parent.data;
-    }
-  }
-  sendToServer({
-    type: 'selected',
-    data,
-  });
-}
-
-function sendToServer(data) {
-  const message = JSON.stringify(data);
-  socket.send(message);
 }
