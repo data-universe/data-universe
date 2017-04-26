@@ -33,15 +33,12 @@ const camera = createCamera();
 // Needed to render UI components attatched to camera
 scene.add(camera);
 
-const vrObject = new Object3D();
-const lastVrObject = new Object3D();
-
 const xboxControls = new XboxRemoteControls(camera);
-let controls = createFlyControls(vrObject, container);
+let controls = createFlyControls(camera, container);
 function controlsCallback(e) {
   // if alpha parameter exists, device supports gyroscope
   if (e.alpha) {
-    controls = createVRControls(vrObject, container);
+    controls = createVRControls(camera, container);
   }
 
   window.removeEventListener('deviceorientation', controlsCallback, true);
@@ -106,17 +103,6 @@ function render() {
   xboxControls.update(delta);
   selector.update(camera, delta, scene);
   controls.update(delta);
-
-  const lastVrOrienationInverse = new Quaternion();
-  lastVrOrienationInverse.copy(lastVrObject.quaternion);
-  lastVrOrienationInverse.inverse();
-
-  const vrOrientationDelta = new Quaternion();
-  vrOrientationDelta.copy(vrObject.quaternion);
-  vrOrientationDelta.multiply(lastVrOrienationInverse);
-
-  camera.quaternion.multiply(vrOrientationDelta);
-  lastVrObject.quaternion.copy(vrObject.quaternion);
 
   planets.forEach(planet => updatePlanet(planet, camera));
 
