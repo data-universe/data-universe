@@ -1,7 +1,7 @@
 [
   {
     "kluster": 1,
-    "yrke":"",
+    "yrke":"Systemutvecklare",
     "koncept": "embedded,matlab,simulink",
     "vektor": [
       -0.7964317799,
@@ -409,7 +409,7 @@
   },
   {
     "klusterIngenjör inom IT": 1,
-    "yrke":"",
+    "yrke":"Ingenjör inom IT",
     "koncept": "projektledning,support,projektarbete",
     "vektor": [
       -0.7420333624,

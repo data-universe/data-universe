@@ -3,9 +3,9 @@ import { Texture } from 'three/textures/Texture';
 import { SpriteMaterial } from 'three/materials/SpriteMaterial';
 import { Sprite } from 'three/objects/Sprite';
 
-export function createBillboard(text, height) {
+export function createBillboard(text, subtext, height) {
   const billboard = new Object3D();
-  const sprite = createSprite(text);
+  const sprite = createSprite(text, subtext);
   const y = height + 0.5;
   sprite.position.set(0, y, 0);
   billboard.add(sprite);
@@ -17,8 +17,8 @@ export function updateBillboard(billboard, camera) {
   billboard.quaternion.copy(camera.quaternion);
 }
 
-function createSprite(text) {
-  const texture = createTexture(text);
+function createSprite(text, subtext) {
+  const texture = createTexture(text, subtext);
   texture.needsUpdate = true;
 
   const material = new SpriteMaterial({ map: texture, fog: true });
@@ -26,29 +26,46 @@ function createSprite(text) {
   return sprite;
 }
 
-function createTexture(text) {
+function createTexture(text, subtext) {
   // These constants can be tweaked to change the styling.
   const fontFace = 'Arial';
-  const fontSize = 24;
+  const headerFontSize = 24;
+  const infoFontSize = 20;
   const backgroundColor = 'rgba(50,75,75,0.5)';
-  const textColor = 'rgba(255,255,255,0.75)';
+  const headerTextColor = 'rgba(255,255,255,0.75)';
+  const infoTextColor = 'rgba(255,255,255,0.60)';
   const padding = 10;
+  const spacing = 18;
   const boxWidth = 256; // Must be a power of 2.
-  const lineHeight = 1.4 * fontSize;
   // Removes some height from the bottom of the box to make the text look more centered.
-  const heightReduction = 0.1 * fontSize;
+  const heightReduction = 0.1 * headerFontSize;
+
+  //Calculate the height of a line
+  const headerLineHeight = 1.4 * headerFontSize;
+  const infoLineHeight = 1.4 * infoFontSize;
 
   // Setup Canvas
   const canvas = document.createElement('canvas');
   canvas.width = boxWidth;
   canvas.height = boxWidth;
   const context = canvas.getContext('2d');
-  context.font = `Normal ${fontSize}px ${fontFace}`;
 
   // Calculate properties and wrap text
   const contentWidth = boxWidth - (2 * padding);
-  const lines = wrapText(context, text, contentWidth);
-  const contentHeight = (lines.length * lineHeight) - heightReduction;
+  context.font = `Normal ${headerFontSize}px ${fontFace}`;
+  const headerLines = wrapText(context, text, contentWidth);
+  context.font = `Normal ${infoFontSize}px ${fontFace}`;
+  const infoLines = wrapText(context, subtext, contentWidth);
+
+  // Calculate the heights of each segment
+  const headerTotalLineHeight = (headerLines.length * headerLineHeight);
+  const infoHeight = (infoLines.length * infoLineHeight);
+  const totalLineHeight = headerTotalLineHeight + infoHeight;
+
+  // Calculate the start of info text segment
+  const infoTextStart = spacing + (headerTotalLineHeight + padding);
+
+  const contentHeight = (totalLineHeight + spacing) - heightReduction;
   const boxHeight = contentHeight + (2 * padding);
   const yOffset = canvas.height - boxHeight;
 
@@ -56,13 +73,33 @@ function createTexture(text) {
   context.fillStyle = backgroundColor;
   context.fillRect(0, yOffset, boxWidth, boxHeight);
 
-  // Render text.
-  context.fillStyle = textColor;
+  // Render header text.
   context.textBaseline = 'top';
-  lines.forEach((line, i) => {
+  context.font = `Normal ${headerFontSize}px ${fontFace}`;
+  context.fillStyle = headerTextColor;
+
+  headerLines.forEach((line, i) => {
     const lineWidth = context.measureText(line).width;
     const lineX = padding + ((contentWidth - lineWidth) / 2);
-    const lineY = padding + (i * lineHeight) + yOffset;
+    const lineY = padding + (i * headerLineHeight) + yOffset;
+    context.fillText(line, lineX, lineY, contentWidth);
+  });
+
+  // Draws line divider
+  context.beginPath();
+  context.moveTo(0, ((headerTotalLineHeight + padding) + yOffset) + (spacing / 2));
+  context.lineTo(boxWidth, ((headerTotalLineHeight + padding) + yOffset) + (spacing / 2));
+  context.strokeStyle = 'rgba(50,75,75,0.8)';
+  context.stroke();
+
+  //  Render info text
+  context.font = `Normal ${infoFontSize}px ${fontFace}`;
+  context.fillStyle = infoTextColor;
+
+  infoLines.forEach((line, i) => {
+    const lineWidth = context.measureText(line).width;
+    const lineX = padding + ((contentWidth - lineWidth) / 2);
+    const lineY = infoTextStart + (i * infoLineHeight) + yOffset;
     context.fillText(line, lineX, lineY, contentWidth);
   });
 
@@ -91,5 +128,6 @@ function wrapText(context, text, maxWidth) {
     }
   }
   lines.push(line);
+
   return lines;
 }
