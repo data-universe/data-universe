@@ -78,7 +78,14 @@ socket.onmessage = (event) => {
   const message = JSON.parse(event.data);
   xboxControls.onMessage(message);
   selectOnXboxInput(message, selector, socket);
+  if (message.type === 'start:release') {
+    resetPosition();
+  }
 };
+
+function resetPosition() {
+  camera.position.set(-194, 74, -29);
+}
 
 // ---
 // Start the game loop
