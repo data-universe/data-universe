@@ -13,7 +13,7 @@ import {
 import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
 import { XboxRemoteControls } from './XboxRemoteControls';
-import { Selector, selectOnKeyPress } from './selector';
+import { Selector, selectOnKeyPress, selectOnXboxInput } from './selector';
 import { createCrosshair } from './crosshair';
 
 // ---
@@ -36,7 +36,7 @@ scene.add(camera);
 const vrObject = new Object3D();
 const lastVrObject = new Object3D();
 
-const xboxControls = new XboxRemoteControls(camera, socket);
+const xboxControls = new XboxRemoteControls(camera);
 let controls = createFlyControls(vrObject, container);
 function controlsCallback(e) {
   // if alpha parameter exists, device supports gyroscope
@@ -74,6 +74,14 @@ loadMockData((error, data) => {
     start(data);
   }
 });
+
+socket.onopen = () => {};
+
+socket.onmessage = (event) => {
+  const message = JSON.parse(event.data);
+  xboxControls.onMessage(message);
+  selectOnXboxInput(message, selector, socket);
+};
 
 // ---
 // Start the game loop

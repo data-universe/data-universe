@@ -5,7 +5,7 @@ import { Quaternion } from 'three/math/Quaternion';
 const joystickMagnitude = 32767.0;
 const triggerMagnitude = 255.0;
 
-export function XboxRemoteControls(object, socket) {
+export function XboxRemoteControls(object) {
   this.object = object;
 
   this.movementSpeed = 10.0;
@@ -22,10 +22,7 @@ export function XboxRemoteControls(object, socket) {
     elevate: { up: 0, down: 0 },
   };
 
-  socket.onopen = () => {};
-
-  socket.onmessage = (event) => {
-    const message = JSON.parse(event.data);
+  this.onMessage = (message) => {
     switch (message.type) {
       case 'left:move':
         this.controls.movement.x = message.x;
