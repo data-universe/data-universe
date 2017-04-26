@@ -14,10 +14,11 @@
   },
   "scripts": {
     "build": "node_modules/.bin/webpack",
-    "start": "node_modules/.bin/webpack-dev-server --open"
+    "start": "node_modules/.bin/webpack-dev-server --host 0.0.0.0 --port 8080 --open"
   },
   "homepage": "https://github.com/marcusrettig/data-universe#readme",
   "devDependencies": {
+    "copy-webpack-plugin": "^4.0.1",
     "eslint": "^3.16.0",
     "eslint-config-airbnb-base": "^11.1.0",
     "eslint-import-resolver-webpack": "^0.8.1",
@@ -28,6 +29,8 @@
     "webpack-glsl-loader": "^1.0.1"
   },
   "dependencies": {
-    "three": "^0.84.0"
+    "three": "^0.84.0",
+    "ws": "^2.2.3",
+    "xbox-controller": "^0.7.0"
   }
 }

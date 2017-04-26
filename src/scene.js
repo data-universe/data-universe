@@ -1,12 +1,12 @@
 import { Scene } from 'three/scenes/Scene';
-import { FogExp2 } from 'three/scenes/FogExp2';
+import { Fog } from 'three/scenes/Fog';
 import { DirectionalLight } from 'three/lights/DirectionalLight';
 import { AmbientLight } from 'three/lights/AmbientLight';
 
-function createScene() {
+export function createScene() {
   const scene = new Scene();
 
-  scene.fog = new FogExp2(0x000000, 0.00000025);
+  scene.fog = new Fog(0x000000, 0.1, 250);
 
   const sun = new DirectionalLight(0xffffff);
   sun.position.set(-1, 0, 1).normalize();
@@ -17,5 +17,3 @@ function createScene() {
 
   return scene;
 }
-
-export { createScene };

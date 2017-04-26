@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Selected Data</title>
+
+<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+
+<style type="text/css">
+
+html {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  background-color: #f4f7f7;
+  color: #252E6A;
+}
+
+html, body, .wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+header.main-header {
+  height: 128px;
+  background: #0081D5;
+  background: linear-gradient(to right, #0081D5, #A133D5);
+}
+
+header.main-header h1 {
+  font-family: 'Roboto Slab', serif;
+  margin: 0;
+  font-size: 64px;
+  line-height: 128px;
+  padding: 0 32px;
+  color: #fff;
+  font-weight: 400;
+}
+
+.content {
+  padding: 32px;
+  flex: 1;
+  min-height: 1px;
+  overflow-y: auto;
+}
+
+.content h2 {
+  font-weight: 500;
+  font-size: 32px;
+  margin: 0;
+}
+
+.card-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+}
+
+.card {
+  padding: 16px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  background-color: #fff;
+  width: 200px;
+  height: 140px;
+  border-radius: 4px;
+  float: left;
+  margin-right: 16px;
+  margin-top: 32px;
+  font-weight: 400;
+}
+
+.card.hidden {
+  transform: scale(0, 0);
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card > header {
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.card > small {
+  font-weight: 300;
+  font-size: 20px;
+  color: #8c9696;
+}
+
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <header class="main-header">
+    <h1>Data Universe</h1>
+  </header>
+  <div class="content">
+    <h2>Your selections:</h2>
+    <ul id="data-list" class="card-list">
+    </ul>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+const remoteUrl = `ws://${window.location.hostname}:8081`;
+const socket = new window.WebSocket(remoteUrl);
+
+const list = document.getElementById('data-list');
+
+socket.onmessage = (event) => {
+  const message = JSON.parse(event.data);
+  switch (message.type) {
+    case 'selected':
+      addToList(message.data);
+      break;
+    default:
+      break;
+  }
+};
+
+function addToList(data) {
+  if (data && data.title) {
+    const item = document.createElement('li');
+    item.className = 'card hidden';
+    const header = document.createElement('header');
+    const headerText = document.createTextNode(data.title);
+    header.appendChild(headerText);
+    const small = document.createElement('small');
+    const smallText = document.createTextNode(data.info);
+    small.appendChild(smallText);
+    item.appendChild(header);
+    item.appendChild(small);
+    setTimeout(() => {
+      item.className = 'card';
+    }, 0);
+    list.insertBefore(item, list.childNodes[0]);
+  }
+}
+
+</script>
+</body>
+</html>
