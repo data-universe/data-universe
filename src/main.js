@@ -11,15 +11,21 @@ import {
 import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
 import { XboxRemoteControls } from './XboxRemoteControls';
-import { Selector } from './selector';
+import { Selector, selectOnKeyPress } from './selector';
 import { createCrosshair } from './crosshair';
 
+// ---
+// Miscellaneous initialization
+// ---
 const container = document.body;
 const remoteUrl = `ws://${window.location.hostname}:8081`;
 
 const clock = new Clock();
 const socket = new window.WebSocket(remoteUrl);
 
+// ---
+// Three.js initialization
+// ---
 const scene = createScene();
 const camera = createCamera();
 // Needed to render UI components attatched to camera
@@ -40,25 +46,33 @@ window.addEventListener('deviceorientation', controlsCallback, true);
 const renderer = createRenderer(container);
 const stereoEffect = createStereoEffect(renderer);
 const selector = new Selector();
+window.addEventListener('keypress', event => selectOnKeyPress(event, selector, socket));
 
+function resize() {
+  resizeCamera(camera);
+  resizeRenderer(renderer);
+}
+window.addEventListener('resize', resize, false);
+
+// ---
+// Create scene
+// ---
 const stars = createStars();
 scene.add(stars);
 
 const crosshair = createCrosshair();
-crosshair.position.set(0, 0, -5);
 camera.add(crosshair);
 
 const planets = [];
-
-window.addEventListener('resize', resize, false);
-window.addEventListener('keypress', onKeyPress);
-
 loadMockData((error, data) => {
   if (!error) {
     start(data);
   }
 });
 
+// ---
+// Start the game loop
+// ---
 function start(data) {
   data.forEach((item) => {
     const planet = createPlanet(item);
@@ -71,6 +85,7 @@ function start(data) {
   render();
 }
 
+// render() is looped
 function render() {
   requestAnimationFrame(render);
   const delta = clock.getDelta();
@@ -81,37 +96,4 @@ function render() {
   planets.forEach(planet => updatePlanet(planet, camera));
 
   stereoEffect.render(scene, camera);
-}
-
-function resize() {
-  resizeCamera(camera);
-  resizeRenderer(renderer);
-}
-
-function onKeyPress(event) {
-  if (event.code === 'Space') {
-    selectItem();
-  }
-}
-
-function selectItem() {
-  const selected = selector.selected;
-  let data;
-  if (selected) {
-    if (selected.isPlanet) {
-      data = selected.data;
-    }
-    else if (selected.isBillboard && selected.parent) {
-      data = selected.parent.data;
-    }
-  }
-  sendToServer({
-    type: 'selected',
-    data,
-  });
-}
-
-function sendToServer(data) {
-  const message = JSON.stringify(data);
-  socket.send(message);
 }

@@ -3,7 +3,7 @@ import { Fog } from 'three/scenes/Fog';
 import { DirectionalLight } from 'three/lights/DirectionalLight';
 import { AmbientLight } from 'three/lights/AmbientLight';
 
-function createScene() {
+export function createScene() {
   const scene = new Scene();
 
   scene.fog = new Fog(0x000000, 0.1, 250);
@@ -17,5 +17,3 @@ function createScene() {
 
   return scene;
 }
-
-export { createScene };
