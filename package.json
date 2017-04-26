@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/marcusrettig/data-universe#readme",
   "devDependencies": {
+    "copy-webpack-plugin": "^4.0.1",
     "eslint": "^3.16.0",
     "eslint-config-airbnb-base": "^11.1.0",
     "eslint-import-resolver-webpack": "^0.8.1",
