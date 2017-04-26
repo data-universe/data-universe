@@ -33,6 +33,12 @@ export function selectOnKeyPress(event, selector, socket) {
   }
 }
 
+export function selectOnXboxInput(message, selector, socket) {
+  if (message.type === 'a:release') {
+    selectItem(selector, socket);
+  }
+}
+
 function selectItem(selector, socket) {
   const selected = selector.selected;
   let data;

@@ -55,6 +55,13 @@ xbox.on('righttrigger', (position) => {
   broadcast(message);
 });
 
+xbox.on('a:release', (key) => {
+  const message = {
+    type: 'a:release',
+  };
+  broadcast(message);
+});
+
 function broadcast(message) {
   const packet = JSON.stringify(message);
   server.clients.forEach((client) => {
