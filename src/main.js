@@ -90,7 +90,7 @@ function start(data) {
     scene.add(planet);
   });
   const origin = planets[96].position;
-  camera.position.set(-100, 70, 30);
+  camera.position.set(-194, 74, -29);
   camera.lookAt(origin);
   render();
 }
