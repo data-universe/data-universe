@@ -1,4 +1,6 @@
 import { Clock } from 'three/core/Clock';
+import { Object3D } from 'three/core/Object3D';
+import { Quaternion } from 'three/math/Quaternion';
 import { loadMockData } from './utils/mock-data';
 import { createScene } from './scene';
 import { createPlanet, updatePlanet } from './planet';
@@ -31,12 +33,15 @@ const camera = createCamera();
 // Needed to render UI components attatched to camera
 scene.add(camera);
 
+const vrObject = new Object3D();
+const lastVrObject = new Object3D();
+
 const xboxControls = new XboxRemoteControls(camera, socket);
-let controls = createFlyControls(camera, container);
+let controls = createFlyControls(vrObject, container);
 function controlsCallback(e) {
   // if alpha parameter exists, device supports gyroscope
   if (e.alpha) {
-    controls = createVRControls(camera, container);
+    controls = createVRControls(vrObject, container);
   }
 
   window.removeEventListener('deviceorientation', controlsCallback, true);
@@ -93,6 +98,18 @@ function render() {
   xboxControls.update(delta);
   selector.update(camera, delta, scene);
   controls.update(delta);
+
+  const lastVrOrienationInverse = new Quaternion();
+  lastVrOrienationInverse.copy(lastVrObject.quaternion);
+  lastVrOrienationInverse.inverse();
+
+  const vrOrientationDelta = new Quaternion();
+  vrOrientationDelta.copy(vrObject.quaternion);
+  vrOrientationDelta.multiply(lastVrOrienationInverse);
+
+  camera.quaternion.multiply(vrOrientationDelta);
+  lastVrObject.quaternion.copy(vrObject.quaternion);
+
   planets.forEach(planet => updatePlanet(planet, camera));
 
   stereoEffect.render(scene, camera);
