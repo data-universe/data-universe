@@ -35,9 +35,12 @@ function createTexture(text, subtext) {
   const headerTextColor = 'rgba(255,255,255,0.75)';
   const infoTextColor = 'rgba(255,255,255,0.60)';
   const padding = 10;
+  const spacing = 18;
   const boxWidth = 256; // Must be a power of 2.
   // Removes some height from the bottom of the box to make the text look more centered.
   const heightReduction = 0.1 * headerFontSize;
+
+  //Calculate the height of a line
   const headerLineHeight = 1.4 * headerFontSize;
   const infoLineHeight = 1.4 * infoFontSize;
 
@@ -49,12 +52,19 @@ function createTexture(text, subtext) {
 
   // Calculate properties and wrap text
   const contentWidth = boxWidth - (2 * padding);
+  context.font = `Normal ${headerFontSize}px ${fontFace}`;
   const headerLines = wrapText(context, text, contentWidth);
+  context.font = `Normal ${infoFontSize}px ${fontFace}`;
   const infoLines = wrapText(context, subtext, contentWidth);
 
-  const spacing = 10;
+  // Calculate the heights of each segment
+  const headerTotalLineHeight = (headerLines.length * headerLineHeight);
+  const infoHeight = (infoLines.length * infoLineHeight);
+  const totalLineHeight = headerTotalLineHeight + infoHeight;
 
-  const totalLineHeight = (infoLineHeight * infoLines.length) + (headerLineHeight * headerLines.length);
+  // Calculate the start of info text segment
+  const infoTextStart = spacing + (headerTotalLineHeight + padding);
+
   const contentHeight = (totalLineHeight + spacing) - heightReduction;
   const boxHeight = contentHeight + (2 * padding);
   const yOffset = canvas.height - boxHeight;
@@ -63,7 +73,7 @@ function createTexture(text, subtext) {
   context.fillStyle = backgroundColor;
   context.fillRect(0, yOffset, boxWidth, boxHeight);
 
-  // Render text.
+  // Render header text.
   context.textBaseline = 'top';
   context.font = `Normal ${headerFontSize}px ${fontFace}`;
   context.fillStyle = headerTextColor;
@@ -75,16 +85,21 @@ function createTexture(text, subtext) {
     context.fillText(line, lineX, lineY, contentWidth);
   });
 
-  const headerHeight = headerLines.length * headerLineHeight;
-  const infoTextStart = spacing + headerHeight;
+  // Draws line divider
+  context.beginPath();
+  context.moveTo(0, ((headerTotalLineHeight + padding) + yOffset) + (spacing / 2));
+  context.lineTo(boxWidth, ((headerTotalLineHeight + padding) + yOffset) + (spacing / 2));
+  context.strokeStyle = 'rgba(50,75,75,0.8)';
+  context.stroke();
 
+  //  Render info text
   context.font = `Normal ${infoFontSize}px ${fontFace}`;
   context.fillStyle = infoTextColor;
 
   infoLines.forEach((line, i) => {
     const lineWidth = context.measureText(line).width;
     const lineX = padding + ((contentWidth - lineWidth) / 2);
-    const lineY = infoTextStart + padding + (i * infoLineHeight) + yOffset;
+    const lineY = infoTextStart + (i * infoLineHeight) + yOffset;
     context.fillText(line, lineX, lineY, contentWidth);
   });
 
@@ -113,5 +128,6 @@ function wrapText(context, text, maxWidth) {
     }
   }
   lines.push(line);
+
   return lines;
 }
