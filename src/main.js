@@ -6,7 +6,7 @@ import CustomCamera from './CustomCamera';
 import CustomRenderer from './CustomRenderer';
 import CustomControls from './CustomControls';
 import Selector from './Selector';
-import Crosshair from './Crosshair';
+import UI from './ui/UI';
 import socket from './socket';
 
 const container = document.body;
@@ -40,8 +40,8 @@ selector.connect();
 // Create scene
 // ---
 
-const crosshair = new Crosshair();
-camera.add(crosshair);
+const ui = new UI();
+camera.add(ui);
 
 loadMockData((error, data) => {
   if (!error) {

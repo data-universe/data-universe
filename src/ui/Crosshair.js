@@ -9,7 +9,6 @@ export default class Crosshair extends LineSegments {
     const material = createMaterial();
 
     super(geometry, material);
-    this.position.set(0, 0, -5);
   }
 }
 
