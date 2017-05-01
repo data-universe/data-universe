@@ -5,17 +5,18 @@ import CustomScene from './CustomScene';
 import Planet from './Planet';
 import CustomCamera from './CustomCamera';
 import CustomRenderer from './CustomRenderer';
-import { createFlyControls, createVRControls } from './controls';
+import CustomControls from './CustomControls';
 import Stars from './Stars';
 import XboxRemoteControls from './XboxRemoteControls';
 import Selector from './Selector';
 import Crosshair from './Crosshair';
 import socket from './socket';
 
+const container = document.body;
+
 // ---
 // Miscellaneous initialization
 // ---
-const container = document.body;
 
 const clock = new Clock();
 
@@ -30,16 +31,8 @@ scene.add(camera);
 
 const xboxControls = new XboxRemoteControls(camera);
 xboxControls.connect();
-let controls = createFlyControls(camera, container);
-function controlsCallback(e) {
-  // if alpha parameter exists, device supports gyroscope
-  if (e.alpha) {
-    controls = createVRControls(camera, container);
-  }
-
-  window.removeEventListener('deviceorientation', controlsCallback, true);
-}
-window.addEventListener('deviceorientation', controlsCallback, true);
+const controls = new CustomControls(camera, container);
+controls.connect();
 
 const renderer = new CustomRenderer();
 renderer.connect();
