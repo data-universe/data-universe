@@ -1,7 +1,7 @@
 import { Clock } from 'three/core/Clock';
 import { StereoEffect } from 'three_examples/effects/StereoEffect';
 import { loadMockData } from './utils/mock-data';
-import { createScene } from './scene';
+import CustomScene from './CustomScene';
 import { createPlanet, updatePlanet } from './planet';
 import CustomCamera from './CustomCamera';
 import CustomRenderer from './CustomRenderer';
@@ -22,7 +22,7 @@ const clock = new Clock();
 // ---
 // Three.js initialization
 // ---
-const scene = createScene();
+const scene = new CustomScene();
 const camera = new CustomCamera();
 camera.connect();
 // Needed to render UI components attatched to camera
