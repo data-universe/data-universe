@@ -4,7 +4,7 @@ import { Quaternion } from 'three/math/Quaternion';
 import { loadMockData } from './utils/mock-data';
 import { createScene } from './scene';
 import { createPlanet, updatePlanet } from './planet';
-import { createCamera, resizeCamera } from './camera';
+import CustomCamera from './CustomCamera';
 import {
   createRenderer,
   resizeRenderer,
@@ -29,7 +29,8 @@ const socket = new window.WebSocket(remoteUrl);
 // Three.js initialization
 // ---
 const scene = createScene();
-const camera = createCamera();
+const camera = new CustomCamera();
+camera.connect();
 // Needed to render UI components attatched to camera
 scene.add(camera);
 
@@ -51,7 +52,6 @@ const selector = new Selector();
 window.addEventListener('keypress', event => selectOnKeyPress(event, selector, socket));
 
 function resize() {
-  resizeCamera(camera);
   resizeRenderer(renderer);
 }
 window.addEventListener('resize', resize, false);
