@@ -6,7 +6,7 @@ import { createPlanet, updatePlanet } from './planet';
 import CustomCamera from './CustomCamera';
 import CustomRenderer from './CustomRenderer';
 import { createFlyControls, createVRControls } from './controls';
-import { createStars } from './stars';
+import Stars from './Stars';
 import XboxRemoteControls from './XboxRemoteControls';
 import Selector from './Selector';
 import Crosshair from './Crosshair';
@@ -51,7 +51,7 @@ selector.connect();
 // ---
 // Create scene
 // ---
-const stars = createStars();
+const stars = new Stars();
 scene.add(stars);
 
 const crosshair = new Crosshair();
