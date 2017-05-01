@@ -2,11 +2,9 @@ import { Clock } from 'three/core/Clock';
 import { StereoEffect } from 'three_examples/effects/StereoEffect';
 import { loadMockData } from './utils/mock-data';
 import CustomScene from './CustomScene';
-import Planet from './Planet';
 import CustomCamera from './CustomCamera';
 import CustomRenderer from './CustomRenderer';
 import CustomControls from './CustomControls';
-import Stars from './Stars';
 import Selector from './Selector';
 import Crosshair from './Crosshair';
 import socket from './socket';
@@ -41,13 +39,10 @@ selector.connect();
 // ---
 // Create scene
 // ---
-const stars = new Stars();
-scene.add(stars);
 
 const crosshair = new Crosshair();
 camera.add(crosshair);
 
-const planets = [];
 loadMockData((error, data) => {
   if (!error) {
     start(data);
@@ -68,12 +63,8 @@ function resetPosition() {
 // Start the game loop
 // ---
 function start(data) {
-  data.forEach((item) => {
-    const planet = new Planet(item);
-    planets.push(planet);
-    scene.add(planet);
-  });
-  const origin = planets[96].position;
+  scene.load(data);
+  const origin = scene.planets[96].position;
   camera.position.set(-194, 74, -29);
   camera.lookAt(origin);
   render();
@@ -86,8 +77,7 @@ function render() {
 
   selector.update(scene, camera);
   controls.update(delta);
-
-  planets.forEach(planet => planet.update(camera));
+  scene.update(camera);
 
   stereoEffect.render(scene, camera);
 }
