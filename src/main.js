@@ -26,7 +26,7 @@ camera.connect();
 // Needed to render UI components attatched to camera
 scene.add(camera);
 
-const controls = new CustomControls(camera, container);
+const controls = new CustomControls(camera);
 controls.connect();
 
 const renderer = new CustomRenderer();

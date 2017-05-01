@@ -3,8 +3,8 @@ import { DeviceOrientationControls } from 'three_examples/controls/DeviceOrienta
 import XboxRemoteControls from './XboxRemoteControls';
 
 export default class CustomControls {
-  constructor(camera, container) {
-    this.flyControls = createFlyControls(camera, container);
+  constructor(camera) {
+    this.flyControls = createFlyControls(camera);
     this.vrControls = null;
     this.xboxControls = new XboxRemoteControls(camera);
     this.controls = this.flyControls;
@@ -14,7 +14,7 @@ export default class CustomControls {
     function onDeviceOrientation(e) {
       if (e.alpha) {
         // Device supports gyroscope.
-        this.vrControls = createVRControls(camera, container);
+        this.vrControls = createVRControls(camera);
         this.vrSupported = true;
         this.toggleVrControls(true);
       }
@@ -57,8 +57,8 @@ export default class CustomControls {
   }
 }
 
-function createFlyControls(camera, container) {
-  const controls = new FlyControls(camera, container);
+function createFlyControls(camera) {
+  const controls = new FlyControls(camera);
 
   controls.movementSpeed = 10.0;
   controls.rollSpeed = Math.PI / 24;
@@ -68,8 +68,8 @@ function createFlyControls(camera, container) {
   return controls;
 }
 
-function createVRControls(camera, container) {
-  const controls = new DeviceOrientationControls(camera, container);
+function createVRControls(camera) {
+  const controls = new DeviceOrientationControls(camera);
   controls.connect();
 
   return controls;
