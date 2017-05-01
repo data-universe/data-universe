@@ -2,7 +2,7 @@ import { Clock } from 'three/core/Clock';
 import { StereoEffect } from 'three_examples/effects/StereoEffect';
 import { loadMockData } from './utils/mock-data';
 import CustomScene from './CustomScene';
-import { createPlanet, updatePlanet } from './planet';
+import Planet from './Planet';
 import CustomCamera from './CustomCamera';
 import CustomRenderer from './CustomRenderer';
 import { createFlyControls, createVRControls } from './controls';
@@ -79,7 +79,7 @@ function resetPosition() {
 // ---
 function start(data) {
   data.forEach((item) => {
-    const planet = createPlanet(item);
+    const planet = new Planet(item);
     planets.push(planet);
     scene.add(planet);
   });
@@ -98,7 +98,7 @@ function render() {
   selector.update(scene, camera);
   controls.update(delta);
 
-  planets.forEach(planet => updatePlanet(planet, camera));
+  planets.forEach(planet => planet.update(camera));
 
   stereoEffect.render(scene, camera);
 }

@@ -2,32 +2,36 @@ import { Color } from 'three/math/Color';
 import { MeshLambertMaterial } from 'three/materials/MeshLambertMaterial';
 import { SphereGeometry } from 'three/geometries/SphereGeometry';
 import { Mesh } from 'three/objects/Mesh';
+import { Object3D } from 'three/core/Object3D';
 import { pickRandom } from './utils/random';
 import Billboard from './Billboard';
 
 const materials = createMaterials();
 const geometries = createGeometries();
 
-export function createPlanet(data) {
-  const geometry = pickRandom(geometries);
-  const material = pickRandom(materials);
-  const planet = new Mesh(geometry, material);
-  planet.position.copy(data.position);
-  planet.position.multiplyScalar(100);
-  planet.data = data;
-  planet.isPlanet = true;
+export default class Planet extends Object3D {
+  constructor(data) {
+    super();
 
-  const radius = geometry.parameters.radius;
-  const billboardHeight = radius + 0.15;
-  const billboard = new Billboard(data.title, data.info, billboardHeight);
-  planet.billboard = billboard;
-  planet.add(billboard);
+    this.position.copy(data.position);
+    this.position.multiplyScalar(100);
+    this.data = data;
+    this.isPlanet = true;
 
-  return planet;
-}
+    const geometry = pickRandom(geometries);
+    const material = pickRandom(materials);
+    const mesh = new Mesh(geometry, material);
+    this.add(mesh);
 
-export function updatePlanet(planet, camera) {
-  planet.billboard.update(camera);
+    const radius = geometry.parameters.radius;
+    const billboardHeight = radius + 0.15;
+    this.billboard = new Billboard(data.title, data.info, billboardHeight);
+    this.add(this.billboard);
+  }
+
+  update(camera) {
+    this.billboard.update(camera);
+  }
 }
 
 function createMaterials() {
