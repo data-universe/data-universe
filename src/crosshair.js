@@ -3,8 +3,18 @@ import { LineBasicMaterial } from 'three/materials/LineBasicMaterial';
 import { Vector3 } from 'three/math/Vector3';
 import { LineSegments } from 'three/objects/LineSegments';
 
-export function createCrosshair() {
-  const material = new LineBasicMaterial({
+export default class Crosshair extends LineSegments {
+  constructor() {
+    const geometry = createGeometry(0.05);
+    const material = createMaterial();
+
+    super(geometry, material);
+    this.position.set(0, 0, -5);
+  }
+}
+
+function createMaterial() {
+  return new LineBasicMaterial({
     color: '#fff',
     linewidth: 2,
     linecap: 'round',
@@ -12,18 +22,14 @@ export function createCrosshair() {
     opacity: 0.25,
     transparent: true,
   });
+}
 
-  const width = 0.025;
-  const height = 0.025;
-
+function createGeometry(size) {
   const geometry = new Geometry();
-  geometry.vertices.push(new Vector3(0, height, 0));
-  geometry.vertices.push(new Vector3(0, -height, 0));
-  geometry.vertices.push(new Vector3(-width, 0, 0));
-  geometry.vertices.push(new Vector3(width, 0, 0));
-
-  const cross = new LineSegments(geometry, material);
-  cross.position.set(0, 0, -5);
-
-  return cross;
+  const halfSize = size / 2;
+  geometry.vertices.push(new Vector3(0, halfSize, 0));
+  geometry.vertices.push(new Vector3(0, -halfSize, 0));
+  geometry.vertices.push(new Vector3(-halfSize, 0, 0));
+  geometry.vertices.push(new Vector3(halfSize, 0, 0));
+  return geometry;
 }

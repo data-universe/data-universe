@@ -9,7 +9,7 @@ import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
 import XboxRemoteControls from './XboxRemoteControls';
 import Selector from './Selector';
-import { createCrosshair } from './crosshair';
+import Crosshair from './Crosshair';
 import socket from './socket';
 
 // ---
@@ -54,7 +54,7 @@ selector.connect();
 const stars = createStars();
 scene.add(stars);
 
-const crosshair = createCrosshair();
+const crosshair = new Crosshair();
 camera.add(crosshair);
 
 const planets = [];
