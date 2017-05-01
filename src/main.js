@@ -100,7 +100,7 @@ function render() {
   const delta = clock.getDelta();
 
   xboxControls.update(delta);
-  selector.update(camera, delta, scene);
+  selector.update(scene, camera);
   controls.update(delta);
 
   planets.forEach(planet => updatePlanet(planet, camera));

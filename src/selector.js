@@ -9,7 +9,7 @@ export class Selector {
     this.selected = null;
   }
 
-  update(camera, delta, scene) {
+  update(scene, camera) {
     const cameraDirection = new Vector2(camera.getWorldDirection.x, camera.getWorldDirection.y);
     this.raycaster.setFromCamera(cameraDirection, camera);
     const intersection = this.raycaster.intersectObjects(scene.children)[0];
