@@ -1,4 +1,4 @@
-import { loadMockData } from './utils/mock-data';
+import loadMockData from './utils/loadMockData';
 import Game from './Game';
 
 const container = document.body;

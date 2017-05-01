@@ -1,8 +1,8 @@
 import { Vector3 } from 'three/math/Vector3';
-import { loadJSON } from './json';
+import loadJson from './loadJson';
 
-export function loadMockData(callback) {
-  loadJSON('assets/100.json', (error, data) => {
+export default function loadMockData(callback) {
+  loadJson('assets/100.json', (error, data) => {
     if (!error) {
       const mockData = data.map(extract);
       callback(undefined, mockData);
