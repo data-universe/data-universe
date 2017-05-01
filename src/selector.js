@@ -1,8 +1,12 @@
 import { Raycaster } from 'three/core/Raycaster';
 import { Vector2 } from 'three/math/Vector2';
+import socket from './socket';
 
-export class Selector {
+export default class Selector {
   constructor() {
+    this.onKeyPress = this.onKeyPress.bind(this);
+    this.onMessage = this.onMessage.bind(this);
+
     this.raycaster = new Raycaster();
     this.selectionDistance = 30;
     this.intersection = null;
@@ -25,38 +29,43 @@ export class Selector {
       this.selected = null;
     }
   }
-}
 
-export function selectOnKeyPress(event, selector, socket) {
-  if (event.code === 'Space') {
-    selectItem(selector, socket);
+  connect() {
+    window.addEventListener('keypress', this.onKeyPress, false);
+    socket.emitter.on('message', this.onMessage);
   }
-}
 
-export function selectOnXboxInput(message, selector, socket) {
-  if (message.type === 'a:release') {
-    selectItem(selector, socket);
+  disconnect() {
+    window.removeEventListener('keypress', this.onKeyPress);
+    socket.emitter.removeListener('message', this.onMessage);
   }
-}
 
-function selectItem(selector, socket) {
-  const selected = selector.selected;
-  let data;
-  if (selected) {
-    if (selected.isPlanet) {
-      data = selected.data;
-    }
-    else if (selected.isBillboard && selected.parent) {
-      data = selected.parent.data;
+  onKeyPress(event) {
+    if (event.code === 'Space') {
+      this.select();
     }
   }
-  sendToServer(socket, {
-    type: 'selected',
-    data,
-  });
-}
 
-function sendToServer(socket, data) {
-  const message = JSON.stringify(data);
-  socket.send(message);
+  onMessage(message) {
+    if (message.type === 'a:release') {
+      this.select();
+    }
+  }
+
+  select() {
+    const selected = this.selected;
+    let data;
+    if (selected) {
+      if (selected.isPlanet) {
+        data = selected.data;
+      }
+      else if (selected.isBillboard && selected.parent) {
+        data = selected.parent.data;
+      }
+    }
+    socket.send({
+      type: 'selected',
+      data,
+    });
+  }
 }

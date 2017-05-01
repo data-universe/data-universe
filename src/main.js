@@ -7,18 +7,17 @@ import CustomCamera from './CustomCamera';
 import CustomRenderer from './CustomRenderer';
 import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
-import { XboxRemoteControls } from './XboxRemoteControls';
-import { Selector, selectOnKeyPress, selectOnXboxInput } from './selector';
+import XboxRemoteControls from './XboxRemoteControls';
+import Selector from './Selector';
 import { createCrosshair } from './crosshair';
+import socket from './socket';
 
 // ---
 // Miscellaneous initialization
 // ---
 const container = document.body;
-const remoteUrl = `ws://${window.location.hostname}:8081`;
 
 const clock = new Clock();
-const socket = new window.WebSocket(remoteUrl);
 
 // ---
 // Three.js initialization
@@ -30,6 +29,7 @@ camera.connect();
 scene.add(camera);
 
 const xboxControls = new XboxRemoteControls(camera);
+xboxControls.connect();
 let controls = createFlyControls(camera, container);
 function controlsCallback(e) {
   // if alpha parameter exists, device supports gyroscope
@@ -46,7 +46,7 @@ renderer.connect();
 container.appendChild(renderer.domElement);
 const stereoEffect = new StereoEffect(renderer);
 const selector = new Selector();
-window.addEventListener('keypress', event => selectOnKeyPress(event, selector, socket));
+selector.connect();
 
 // ---
 // Create scene
@@ -64,16 +64,11 @@ loadMockData((error, data) => {
   }
 });
 
-socket.onopen = () => {};
-
-socket.onmessage = (event) => {
-  const message = JSON.parse(event.data);
-  xboxControls.onMessage(message);
-  selectOnXboxInput(message, selector, socket);
+socket.emitter.on('message', (message) => {
   if (message.type === 'start:release') {
     resetPosition();
   }
-};
+});
 
 function resetPosition() {
   camera.position.set(-194, 74, -29);
