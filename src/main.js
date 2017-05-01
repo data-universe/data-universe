@@ -1,13 +1,10 @@
 import { Clock } from 'three/core/Clock';
+import { StereoEffect } from 'three_examples/effects/StereoEffect';
 import { loadMockData } from './utils/mock-data';
 import { createScene } from './scene';
 import { createPlanet, updatePlanet } from './planet';
 import CustomCamera from './CustomCamera';
-import {
-  createRenderer,
-  resizeRenderer,
-  createStereoEffect,
-} from './renderer';
+import CustomRenderer from './CustomRenderer';
 import { createFlyControls, createVRControls } from './controls';
 import { createStars } from './stars';
 import { XboxRemoteControls } from './XboxRemoteControls';
@@ -44,15 +41,12 @@ function controlsCallback(e) {
 }
 window.addEventListener('deviceorientation', controlsCallback, true);
 
-const renderer = createRenderer(container);
-const stereoEffect = createStereoEffect(renderer);
+const renderer = new CustomRenderer();
+renderer.connect();
+container.appendChild(renderer.domElement);
+const stereoEffect = new StereoEffect(renderer);
 const selector = new Selector();
 window.addEventListener('keypress', event => selectOnKeyPress(event, selector, socket));
-
-function resize() {
-  resizeRenderer(renderer);
-}
-window.addEventListener('resize', resize, false);
 
 // ---
 // Create scene
