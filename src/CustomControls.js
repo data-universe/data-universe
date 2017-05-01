@@ -1,10 +1,12 @@
 import { FlyControls } from 'three_examples/controls/FlyControls';
 import { DeviceOrientationControls } from 'three_examples/controls/DeviceOrientationControls';
+import XboxRemoteControls from './XboxRemoteControls';
 
 export default class CustomControls {
   constructor(camera, container) {
     this.flyControls = createFlyControls(camera, container);
     this.vrControls = null;
+    this.xboxControls = new XboxRemoteControls(camera);
     this.controls = this.flyControls;
     this.vrSupported = false;
     this.vrControlsEnabled = false;
@@ -25,17 +27,21 @@ export default class CustomControls {
     if (this.vrSupported) {
       this.vrControls.connect();
     }
+    this.xboxControls.connect();
   }
 
   disconnect() {
     if (this.vrSupported) {
       this.vrControls.disconnect();
     }
-    this.flyControls.dispose();
+    this.xboxControls.disconnect();
+    // FlyControls is not disposed because it cannot be reconnected
+    // TODO: Fix this to avoid memory leak.
   }
 
   update(delta) {
     this.controls.update(delta);
+    this.xboxControls.update(delta);
   }
 
   toggleVrControls(enabled) {

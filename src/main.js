@@ -7,7 +7,6 @@ import CustomCamera from './CustomCamera';
 import CustomRenderer from './CustomRenderer';
 import CustomControls from './CustomControls';
 import Stars from './Stars';
-import XboxRemoteControls from './XboxRemoteControls';
 import Selector from './Selector';
 import Crosshair from './Crosshair';
 import socket from './socket';
@@ -29,8 +28,6 @@ camera.connect();
 // Needed to render UI components attatched to camera
 scene.add(camera);
 
-const xboxControls = new XboxRemoteControls(camera);
-xboxControls.connect();
 const controls = new CustomControls(camera, container);
 controls.connect();
 
@@ -87,7 +84,6 @@ function render() {
   requestAnimationFrame(render);
   const delta = clock.getDelta();
 
-  xboxControls.update(delta);
   selector.update(scene, camera);
   controls.update(delta);
 
