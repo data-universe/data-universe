@@ -3,18 +3,20 @@ import { Texture } from 'three/textures/Texture';
 import { SpriteMaterial } from 'three/materials/SpriteMaterial';
 import { Sprite } from 'three/objects/Sprite';
 
-export function createBillboard(text, subtext, height) {
-  const billboard = new Object3D();
-  const sprite = createSprite(text, subtext);
-  const y = height + 0.5;
-  sprite.position.set(0, y, 0);
-  billboard.add(sprite);
-  billboard.isBillboard = true;
-  return billboard;
-}
+export default class Billboard extends Object3D {
+  constructor(text, subtext, height) {
+    super();
 
-export function updateBillboard(billboard, camera) {
-  billboard.quaternion.copy(camera.quaternion);
+    const sprite = createSprite(text, subtext);
+    const y = height + 0.5;
+    sprite.position.set(0, y, 0);
+    this.add(sprite);
+    this.isBillboard = true;
+  }
+
+  update(camera) {
+    this.quaternion.copy(camera.quaternion);
+  }
 }
 
 function createSprite(text, subtext) {
@@ -40,7 +42,7 @@ function createTexture(text, subtext) {
   // Removes some height from the bottom of the box to make the text look more centered.
   const heightReduction = 0.1 * headerFontSize;
 
-  //Calculate the height of a line
+  // Calculate the height of a line
   const headerLineHeight = 1.4 * headerFontSize;
   const infoLineHeight = 1.4 * infoFontSize;
 

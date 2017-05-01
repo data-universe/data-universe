@@ -2,8 +2,8 @@ import { Color } from 'three/math/Color';
 import { MeshLambertMaterial } from 'three/materials/MeshLambertMaterial';
 import { SphereGeometry } from 'three/geometries/SphereGeometry';
 import { Mesh } from 'three/objects/Mesh';
-import { createBillboard, updateBillboard } from './billboard';
 import { pickRandom } from './utils/random';
+import Billboard from './Billboard';
 
 const materials = createMaterials();
 const geometries = createGeometries();
@@ -19,7 +19,7 @@ export function createPlanet(data) {
 
   const radius = geometry.parameters.radius;
   const billboardHeight = radius + 0.15;
-  const billboard = createBillboard(data.title, data.info, billboardHeight);
+  const billboard = new Billboard(data.title, data.info, billboardHeight);
   planet.billboard = billboard;
   planet.add(billboard);
 
@@ -27,7 +27,7 @@ export function createPlanet(data) {
 }
 
 export function updatePlanet(planet, camera) {
-  updateBillboard(planet.billboard, camera);
+  planet.billboard.update(camera);
 }
 
 function createMaterials() {
