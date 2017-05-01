@@ -1,6 +1,4 @@
 import { Clock } from 'three/core/Clock';
-import { Object3D } from 'three/core/Object3D';
-import { Quaternion } from 'three/math/Quaternion';
 import { loadMockData } from './utils/mock-data';
 import { createScene } from './scene';
 import { createPlanet, updatePlanet } from './planet';
