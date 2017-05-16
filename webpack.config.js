@@ -33,6 +33,10 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js'],
+    modules: [
+      __dirname,
+      path.resolve(__dirname, './node_modules'),
+    ],
     alias: {
       three: path.resolve(__dirname, 'node_modules/three/src/'),
       three_examples: path.resolve(__dirname, 'node_modules/three/examples/js/'),
