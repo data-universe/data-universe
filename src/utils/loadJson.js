@@ -1,4 +1,4 @@
-export function loadJSON(path, callback) {
+export default function loadJson(path, callback) {
   const request = new XMLHttpRequest();
   request.overrideMimeType('application/json');
   request.open('GET', path, true);

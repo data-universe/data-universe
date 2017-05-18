@@ -4,32 +4,33 @@ import { Vector3 } from 'three/math/Vector3';
 import { PointsMaterial } from 'three/materials/PointsMaterial';
 import { Points } from 'three/objects/Points';
 
-const radius = 6371;
+export default class Stars extends Object3D {
+  constructor() {
+    super();
 
-export function createStars() {
-  const stars = new Object3D();
-  const geometry = [createGeometry(250), createGeometry(1500)];
-  const materials = createMaterials();
+    const geometries = [createGeometry(250), createGeometry(1500)];
+    const materials = createMaterials();
 
-  for (let i = 10; i < 30; i += 1) {
-    const chunk = new Points(geometry[i % 2], materials[i % 6]);
+    for (let i = 10; i < 30; i += 1) {
+      const chunk = new Points(geometries[i % 2], materials[i % 6]);
 
-    chunk.rotation.x = Math.random() * 6;
-    chunk.rotation.y = Math.random() * 6;
-    chunk.rotation.z = Math.random() * 6;
+      chunk.rotation.x = Math.random() * 6;
+      chunk.rotation.y = Math.random() * 6;
+      chunk.rotation.z = Math.random() * 6;
 
-    const s = i * 10;
-    chunk.scale.set(s, s, s);
+      const s = i * 10;
+      chunk.scale.set(s, s, s);
 
-    chunk.matrixAutoUpdate = false;
-    chunk.updateMatrix();
+      chunk.matrixAutoUpdate = false;
+      chunk.updateMatrix();
 
-    stars.add(chunk);
+      this.add(chunk);
+    }
   }
-  return stars;
 }
 
 function createGeometry(numberOfStars) {
+  const radius = 6371;
   const geometry = new Geometry();
   const vertices = geometry.vertices;
   for (let i = 0; i < numberOfStars; i += 1) {
