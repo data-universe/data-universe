@@ -8,13 +8,13 @@ The goal of data-universe is to simplify the way in how data can be explored and
 
 To reach this goal, we believe in taking advantage of the natural curiosity which we all possess, and putting the user inside the data, rather than in front of it. By representing the data in a Virtual Reality, the user is enabled to move around and explore based on instinct and experiment with direct visual feedback. The data jungle is moved from away from static websites and database interfaces, into an open and accessible world where the user is in the center and enabled with the controls.
 
-Currently we are working with the use case of visualizing available employment opportunities in collaboration with the Swedish Employment Agency (Arbetsförmedlingen). This is also what triggered the creation of data-universe at an OpenHack event, which is a hackathon focused on addressing humanitarian and social challenges. 
+Currently we are working with the use case of visualizing available employment opportunities in collaboration with the Swedish Employment Agency ([Arbetsförmedlingen](https://www.arbetsformedlingen.se/). This is also what triggered the creation of data-universe at an [OpenHack](http://www.openhack.io) event, which is a hackathon focused on addressing humanitarian and social challenges. 
 
 In the future we aim to broaden the scope to include further use cases, in order to make the world of data more accessible and understandable. 
 
 ## Setup
 
-The project is currently in an early state why it may not be ready to most end-users. However, if you have the technical background needed, and interested in setting it up, we encourage you to download the project and try it out! It is based on the D3.js framework and currently only tested on a Samsung mobile handset device with Virtual Reality capabilities.
+The project is currently in an early state why it may not be ready to most end-users. However, if you have the technical background needed, and interested in setting it up, we encourage you to download the project and try it out! It is based on the [three.js](https://threejs.org/) framework and currently only tested on an iPhone mobile handset device with Virtual Reality capabilities.
 
 To set it up, please follow the steps below:
 
