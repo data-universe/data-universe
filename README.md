@@ -28,4 +28,4 @@ Connect your phone with Safari or Chrome to port 8080 (if your firewall does not
 
 ## Contributing
 
-Do you wish to join us in our quest? We are an open community and welcome anyone who wishes to join! You can reach us on marcus0706@live.se.
+Do you wish to join us in our quest? We are an open community and welcome anyone who wishes to join! You can reach us on data-universe@openhack.io.
