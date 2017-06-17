@@ -12,4 +12,8 @@ export default class UI extends Object3D {
     // UI will appear 5 units away from the camera.
     this.position.set(0, 0, -5);
   }
+
+  update(selector) {
+    this.crosshair.update(selector);
+  }
 }
