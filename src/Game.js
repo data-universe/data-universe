@@ -1,4 +1,5 @@
 import { Clock } from 'three/core/Clock';
+import { Vector3 } from 'three/math/Vector3';
 import { StereoEffect } from 'three_examples/effects/StereoEffect';
 import CustomScene from './CustomScene';
 import CustomCamera from './CustomCamera';
@@ -13,6 +14,8 @@ export default class Game {
     this.render = this.render.bind(this);
     this.onMessage = this.onMessage.bind(this);
 
+    this.spawn = new Vector3(-194, 74, -29);
+
     this.clock = new Clock();
     this.scene = new CustomScene();
     this.camera = new CustomCamera();
@@ -20,7 +23,7 @@ export default class Game {
     this.renderer = new CustomRenderer();
     this.stereoEffect = new StereoEffect(this.renderer);
     this.selector = new Selector();
-    this.ui = new UI();
+    this.ui = new UI(this.spawn);
 
     // Needed to render ui
     this.scene.add(this.camera);
@@ -46,7 +49,7 @@ export default class Game {
   }
 
   resetPosition() {
-    this.camera.position.set(-194, 74, -29);
+    this.camera.position.copy(this.spawn);
   }
 
   start(data) {
@@ -63,6 +66,7 @@ export default class Game {
 
     this.selector.update(this.scene, this.camera);
     this.controls.update(delta);
+    this.ui.update();
     this.scene.update(this.camera);
 
     this.stereoEffect.render(this.scene, this.camera);

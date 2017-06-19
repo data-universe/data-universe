@@ -3,16 +3,20 @@ import Crosshair from './Crosshair';
 import Compass from './Compass';
 
 export default class UI extends Object3D {
-  constructor() {
+  constructor(spawn) {
     super();
 
     this.crosshair = new Crosshair();
     this.add(this.crosshair);
 
-    this.compass = new Compass();
+    this.compass = new Compass(spawn);
     this.add(this.compass);
 
     // UI will appear 5 units away from the camera.
     this.position.set(0, 0, -5);
+  }
+
+  update() {
+    this.compass.update();
   }
 }

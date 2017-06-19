@@ -4,13 +4,19 @@ import { TetrahedronGeometry } from 'three/geometries/TetrahedronGeometry';
 import { MeshLambertMaterial } from 'three/materials/MeshLambertMaterial';
 
 export default class Compass extends Object3D {
-  constructor() {
+  constructor(spawn) {
     const geometry = new TetrahedronGeometry();
     const material = new MeshLambertMaterial({
       color: (new Color()).setHSL(0.8, 0.4, 0.5),
       reflectivity: 0.5,
     });
 
-    super(geometry, material);
+    const compass = super(geometry, material);
+    compass.spawn = spawn;
+    return compass;
+  }
+
+  update() {
+    this.lookAt(this.spawn);
   }
 }
