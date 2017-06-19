@@ -6,6 +6,8 @@ export default class Selector {
   constructor() {
     this.onKeyPress = this.onKeyPress.bind(this);
     this.onMessage = this.onMessage.bind(this);
+    this.selectEvent = false;
+    this.timer = 0;
 
     this.raycaster = new Raycaster();
     this.selectionDistance = 30;
@@ -28,6 +30,14 @@ export default class Selector {
       this.intersection = null;
       this.selected = null;
     }
+
+    if (this.selectEvent && this.timer < 5) {
+      this.timer += 1;
+    }
+    else if (this.selectEvent && this.timer >= 5) {
+      this.timer = 0;
+      this.selectEvent = false;
+    }
   }
 
   connect() {
@@ -41,13 +51,15 @@ export default class Selector {
   }
 
   onKeyPress(event) {
-    if (event.code === 'Space') {
+    if (!this.selectEvent && event.code === 'Space') {
+      this.selectEvent = true;
       this.select();
     }
   }
 
   onMessage(message) {
-    if (message.type === 'a:release') {
+    if (!this.selectEvent && message.type === 'a:release') {
+      this.selectEvent = true;
       this.select();
     }
   }
@@ -62,10 +74,11 @@ export default class Selector {
       else if (selected.isBillboard && selected.parent) {
         data = selected.parent.data;
       }
-      else if (selected.type === 'Mesh') {
+      else if (selected.type === 'Mesh' && selected.parent.parent) {
         data = selected.parent.parent.data;
       }
     }
+
     socket.send({
       type: 'selected',
       data,
