@@ -16,7 +16,7 @@ export default class Selector {
   update(scene, camera) {
     const cameraDirection = new Vector2(camera.getWorldDirection.x, camera.getWorldDirection.y);
     this.raycaster.setFromCamera(cameraDirection, camera);
-    const intersection = this.raycaster.intersectObjects(scene.children)[0];
+    const intersection = this.raycaster.intersectObjects(scene.planets, true)[0];
     if (
       intersection &&
       intersection.distance < this.selectionDistance
@@ -61,6 +61,9 @@ export default class Selector {
       }
       else if (selected.isBillboard && selected.parent) {
         data = selected.parent.data;
+      }
+      else if (selected.type === 'Mesh') {
+        data = selected.parent.parent.data;
       }
     }
     socket.send({
