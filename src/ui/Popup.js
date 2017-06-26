@@ -7,13 +7,51 @@ export default class Popup extends Object3D {
   constructor(text) {
     super();
 
-    const sprite = createSprite(text);
-    sprite.position.set(0, 0, 0);
-    this.add(sprite);
+    this.sprite = createSprite(text);
+    this.initPosY = -1;
+    this.sprite.position.set(0, this.initPosY, 0);
+
+    this.posY = this.initPosY;
+    this.upPosY = -0.5;
+    this.timer = 0;
+    this.selected = false;
+    this.isUp = false;
+    this.isMovingUp = true;
+    this.timer = 0;
+    this.timeLimit = 50;
+    this.add(this.sprite);
   }
 
-  update() {
-
+  update(selector) {
+    if (!this.selected && selector.selectEvent && selector.selected) {
+      this.selected = true;
+    }
+    else if (this.selected && !this.isUp && this.isMovingUp && this.posY <= this.upPosY) {
+      this.posY += 0.03;
+      this.sprite.position.set(0, this.posY, 0);
+    }
+    else if (this.selected && !this.isUp && this.isMovingUp) {
+      this.isUp = true;
+      this.isMovingUp = false;
+    }
+    else if (this.selected && this.isUp && this.timer < this.timeLimit) {
+      this.timer += 1;
+    }
+    else if (this.selected && this.isUp) {
+      this.isUp = false;
+    }
+    else if (this.selected && !this.isUp && !this.isMovingUp && this.posY > this.initPosY) {
+      this.posY -= 0.03;
+      this.sprite.position.set(0, this.posY, 0);
+    }
+    else if (this.selected) {
+      this.selected = false;
+      this.timer = 0;
+      this.posY = this.initPosY;
+      this.isUp = false;
+      this.isMovingUp = true;
+      this.sprite.position.set(0, this.posY, 0);
+    }
   }
 }
 
