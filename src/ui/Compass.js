@@ -16,7 +16,7 @@ export default class Compass extends Object3D {
 
     const mesh = new Mesh(geometry, material);
     mesh.position.set(1, 1, 0);
-    mesh.position.multiplyScalar(2);
+    mesh.position.multiplyScalar(1.2);
     this.add(mesh);
 
     this.spawn = spawn;
@@ -26,7 +26,7 @@ export default class Compass extends Object3D {
 
   update() {
     console.log(this.spawn);
-    this.children[0].lookAt(this.spawn);
-    this.lookAt(this.spawn);
+    this.children[0].rotation.y -= 0.005;
+    // this.lookAt(this.spawn);
   }
 }
