@@ -8,17 +8,17 @@ export default class Popup extends Object3D {
     super();
 
     this.sprite = createSprite(text);
-    this.initPosY = -1;
+    this.initPosY = -2;
     this.sprite.position.set(0, this.initPosY, 0);
 
     this.posY = this.initPosY;
-    this.upPosY = -0.5;
+    this.upPosY = -1;
     this.timer = 0;
     this.selected = false;
     this.isUp = false;
     this.isMovingUp = true;
     this.timer = 0;
-    this.timeLimit = 50;
+    this.timeLimit = 80;
     this.add(this.sprite);
   }
 
@@ -66,14 +66,14 @@ function createSprite(text) {
 
 function createTexture(text) {
   const canvas = document.createElement('canvas');
-  canvas.width = 250;
-  canvas.height = 100;
+  canvas.width = 256;
+  canvas.height = 256;
   const context = canvas.getContext('2d');
 
-  context.font = 'Normal 40px Arial';
+  context.font = 'Normal 12px Arial';
   context.textAlign = 'center';
   context.fillStyle = 'rgba(245,245,245,0.75)';
-  context.fillText('Fubar', 250, 100);
+  context.fillText(text, 128, 128);
 
   return new Texture(canvas);
 }

@@ -9,7 +9,7 @@ export default class UI extends Object3D {
     this.crosshair = new Crosshair();
     this.add(this.crosshair);
 
-    this.popup = new Popup('');
+    this.popup = new Popup('Added job!');
     this.add(this.popup);
 
     // UI will appear 5 units away from the camera.
