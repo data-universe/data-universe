@@ -25,8 +25,6 @@ export default class Game {
     // Needed to render ui
     this.scene.add(this.camera);
     this.camera.add(this.ui);
-
-    this.resetPosition();
   }
 
   connect() {
@@ -46,14 +44,14 @@ export default class Game {
   }
 
   resetPosition() {
-    this.camera.position.set(-194, 74, -29);
+    const { x, y, z } = this.scene.origin;
+    this.camera.position.set(x, y, z + 200);
   }
 
   start(data) {
     this.scene.load(data);
-    const origin = this.scene.planets[96].position;
     this.resetPosition();
-    this.camera.lookAt(origin);
+    this.camera.lookAt(this.scene.origin);
     this.render();
   }
 

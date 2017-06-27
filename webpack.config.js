@@ -18,6 +18,10 @@ module.exports = {
         loader: 'webpack-glsl-loader',
       },
       {
+        test: /\.(jpe?g|png|gif|svg)$/,
+        loader: 'file-loader',
+      },
+      {
         test: /FlyControls\.js$/,
         loader: path.resolve(__dirname, 'loaders/fly-controls-loader'),
       },
