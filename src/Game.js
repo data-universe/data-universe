@@ -1,4 +1,5 @@
 import { Clock } from 'three/core/Clock';
+import { Object3D } from 'three/core/Object3D';
 import { Vector3 } from 'three/math/Vector3';
 import { StereoEffect } from 'three_examples/effects/StereoEffect';
 import CustomScene from './CustomScene';
@@ -15,6 +16,8 @@ export default class Game {
     this.onMessage = this.onMessage.bind(this);
 
     this.spawn = new Vector3(-194, 74, -29);
+    this.spawnObj = new Object3D();
+    this.spawnObj.position.copy(this.spawn);
 
     this.clock = new Clock();
     this.scene = new CustomScene();
@@ -66,7 +69,7 @@ export default class Game {
 
     this.selector.update(this.scene, this.camera);
     this.controls.update(delta);
-    this.ui.update();
+    this.ui.update(this.camera);
     this.scene.update(this.camera);
 
     this.stereoEffect.render(this.scene, this.camera);

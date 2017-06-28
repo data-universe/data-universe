@@ -16,7 +16,7 @@ export default class UI extends Object3D {
     this.position.set(0, 0, -5);
   }
 
-  update() {
-    this.compass.update();
+  update(camera) {
+    this.compass.update(camera);
   }
 }
