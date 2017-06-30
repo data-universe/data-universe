@@ -14,8 +14,8 @@ export default class Game {
     this.onMessage = this.onMessage.bind(this);
 
     this.clock = new Clock();
-    this.scene = new CustomScene();
     this.camera = new CustomCamera();
+    this.scene = new CustomScene(this.camera);
     this.controls = new CustomControls(this.camera);
     this.renderer = new CustomRenderer();
     this.stereoEffect = new StereoEffect(this.renderer);
@@ -61,7 +61,7 @@ export default class Game {
 
     this.selector.update(this.scene, this.camera);
     this.controls.update(delta);
-    this.scene.update(this.camera);
+    this.scene.update();
 
     this.stereoEffect.render(this.scene, this.camera);
   }

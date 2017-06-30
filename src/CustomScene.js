@@ -13,7 +13,7 @@ import PlanetBuffer from './PlanetBuffer';
 const ballImageUrl = require('../assets/ball.png');
 
 export default class CustomScene extends Scene {
-  constructor() {
+  constructor(camera) {
     super();
 
     this.fog = new Fog(0x000000, 0.1, 500);
@@ -28,7 +28,7 @@ export default class CustomScene extends Scene {
     const stars = new Stars();
     this.add(stars);
 
-    this.planetBuffer = new PlanetBuffer(this);
+    this.planetBuffer = new PlanetBuffer(this, camera);
   }
 
   load(data) {
@@ -58,7 +58,7 @@ export default class CustomScene extends Scene {
     this.planetBuffer.load(data);
   }
 
-  update(camera) {
-    this.planetBuffer.update(camera);
+  update() {
+    this.planetBuffer.update();
   }
 }
