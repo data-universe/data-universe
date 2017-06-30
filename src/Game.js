@@ -1,5 +1,8 @@
+// Add loaders for these
+import { WebVRManager } from '../webvr-boilerplate/build/webvr-manager';
+
 import { Clock } from 'three/core/Clock';
-import { StereoEffect } from 'three_examples/effects/StereoEffect';
+import { VREffect } from 'three_examples/effects/VREffect';
 import CustomScene from './CustomScene';
 import CustomCamera from './CustomCamera';
 import CustomControls from './CustomControls';
@@ -18,9 +21,11 @@ export default class Game {
     this.camera = new CustomCamera();
     this.controls = new CustomControls(this.camera);
     this.renderer = new CustomRenderer();
-    this.stereoEffect = new StereoEffect(this.renderer);
+    this.stereoEffect = new VREffect(this.renderer);
     this.selector = new Selector();
     this.ui = new UI();
+
+    this.manager = new WebVRManager(this.renderer, this.stereoEffect);
 
     // Needed to render ui
     this.scene.add(this.camera);
@@ -54,6 +59,7 @@ export default class Game {
     const origin = this.scene.planets[96].position;
     this.resetPosition();
     this.camera.lookAt(origin);
+    this.manager.enterVR;
     this.render();
   }
 
