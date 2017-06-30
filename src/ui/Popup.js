@@ -23,6 +23,8 @@ export default class Popup extends Object3D {
   }
 
   update(selector) {
+    // TODO: Rewrite this animation using tweens.
+
     if (!this.selected && selector.selectEvent && selector.selected) {
       this.selected = true;
     }

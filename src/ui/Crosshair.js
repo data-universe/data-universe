@@ -18,6 +18,8 @@ export default class Crosshair extends LineSegments {
   }
 
   update(selector) {
+    // TODO: Rewrite this animation using tweens.
+
     if (!this.selected && selector.selectEvent && selector.selected) {
       this.selected = true;
     }
