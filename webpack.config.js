@@ -29,6 +29,18 @@ module.exports = {
         test: /DeviceOrientationControls\.js$/,
         loader: path.resolve(__dirname, 'loaders/device-orientation-controls-loader'),
       },
+      {
+        test: /VREffect\.js$/,
+        loader: path.resolve(__dirname, 'loaders/vr-effect-loader'),
+      },
+      {
+        test: /VRControls\.js$/,
+        loader: path.resolve(__dirname, 'loaders/vr-controls-loader'),
+      },
+      {
+        test: /webvr-manager\.js$/,
+        loader: path.resolve(__dirname, 'loaders/webvr-manager-loader'),
+      },
     ],
   },
   resolve: {
@@ -36,6 +48,7 @@ module.exports = {
     alias: {
       three: path.resolve(__dirname, 'node_modules/three/src/'),
       three_examples: path.resolve(__dirname, 'node_modules/three/examples/js/'),
+      webvr_manager: path.resolve(__dirname, 'webvr-boilerplate/build/'),
     },
   },
   plugins: [
