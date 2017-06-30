@@ -17,6 +17,13 @@ export default class PlanetWrapper {
 
   unload() {
     this.scene.remove(this.planet);
+    this.planet = null;
     this.loaded = false;
+  }
+
+  update(camera) {
+    if (this.planet) {
+      this.planet.update(camera);
+    }
   }
 }

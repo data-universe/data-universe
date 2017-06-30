@@ -66,8 +66,7 @@ export default class PlanetBuffer {
   }
 
   update() {
-    const position = this.camera.position;
-    const nextIndex = this.getChunkIndexAtPosition(position);
+    const nextIndex = this.getChunkIndexAtPosition(this.camera.position);
     if (this.isNewIndex(nextIndex)) {
       const nextLoadedChunks = this.getChunksAround(nextIndex);
       const nextLoadedChunksSet = new Set(nextLoadedChunks);
@@ -79,7 +78,7 @@ export default class PlanetBuffer {
       this.chunkIndex = nextIndex;
       this.loadedChunks = nextLoadedChunks;
     }
-    this.loadedChunks.forEach(chunk => chunk.update(position));
+    this.loadedChunks.forEach(chunk => chunk.update(this.camera));
   }
 
   isNewIndex({ xi, yi, zi }) {
