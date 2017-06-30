@@ -1,14 +1,15 @@
-import Chunk from './PlanetBufferChunk';
+import PlanetBufferChunk from './PlanetBufferChunk';
 
 export default class PlanetBuffer {
   constructor(scene, camera) {
-    this.chunkSize = 25;
-    this.renderDistance = 2;
+    this.chunkSize = 25; // The size of one chunk
+    this.bufferSize = 2; // How many chunks in each direction should be loaded
+    this.bufferDistance = this.bufferSize * this.chunkSize;
     this.chunks = {};
-    this.lastChunkIndex = { xi: NaN, yi: NaN, zi: NaN };
-    this.planets = [];
+    this.chunkIndex = { xi: NaN, yi: NaN, zi: NaN };
     this.scene = scene;
     this.camera = camera;
+    this.loadedChunks = [];
   }
 
   load(data) {
@@ -16,9 +17,7 @@ export default class PlanetBuffer {
       const chunk = this.getChunkAtPosition(item.position);
       chunk.addPlanetData(item);
     });
-    // Load the chunk at current position
-    this.lastChunkIndex = this.getChunkIndexAtPosition(this.camera.position);
-    this.getChunk(this.lastChunkIndex).load();
+    this.update();
   }
 
   getChunkIndexAtPosition({ x, y, z }) {
@@ -42,18 +41,18 @@ export default class PlanetBuffer {
       chunks[xi][yi] = {};
     }
     if (!chunks[xi][yi][zi]) {
-      chunks[xi][yi][zi] = new Chunk(this.scene);
+      chunks[xi][yi][zi] = new PlanetBufferChunk(this.scene, this.bufferDistance);
     }
     return chunks[xi][yi][zi];
   }
 
   getChunksAround(centerChunkIndex) {
-    const xiStart = centerChunkIndex.xi - this.renderDistance;
-    const yiStart = centerChunkIndex.yi - this.renderDistance;
-    const ziStart = centerChunkIndex.zi - this.renderDistance;
-    const xiEnd = centerChunkIndex.xi + this.renderDistance;
-    const yiEnd = centerChunkIndex.yi + this.renderDistance;
-    const ziEnd = centerChunkIndex.zi + this.renderDistance;
+    const xiStart = centerChunkIndex.xi - this.bufferSize;
+    const yiStart = centerChunkIndex.yi - this.bufferSize;
+    const ziStart = centerChunkIndex.zi - this.bufferSize;
+    const xiEnd = centerChunkIndex.xi + this.bufferSize;
+    const yiEnd = centerChunkIndex.yi + this.bufferSize;
+    const ziEnd = centerChunkIndex.zi + this.bufferSize;
 
     const chunks = [];
     for (let xi = xiStart; xi <= xiEnd; xi += 1) {
@@ -66,29 +65,25 @@ export default class PlanetBuffer {
     return chunks;
   }
 
-  updatePosition(position) {
-    const index = this.getChunkIndexAtPosition(position);
-    const lastIndex = this.lastChunkIndex;
-    if (index.xi !== lastIndex.xi || index.yi !== lastIndex.yi || index.zi !== lastIndex.zi) {
-      const lastChunks = this.getChunksAround(lastIndex);
-      const chunks = this.getChunksAround(index);
-
-      const lastChunksSet = new Set(lastChunks);
-      const chunksSet = new Set(chunks);
-
-      const chunksToUnload = lastChunks.filter(chunk => !chunksSet.has(chunk));
-      const chunksToLoad = chunks.filter(chunk => !lastChunksSet.has(chunk));
-
-      chunksToUnload.forEach(chunk => chunk.unload());
-      chunksToLoad.forEach(chunk => chunk.load());
-
-      this.lastChunkIndex = index;
-    }
-  }
-
   update() {
-    this.updatePosition(this.camera.position);
-    this.planets.forEach(planet => planet.update(this.camera));
+    const position = this.camera.position;
+    const nextIndex = this.getChunkIndexAtPosition(position);
+    if (this.isNewIndex(nextIndex)) {
+      const nextLoadedChunks = this.getChunksAround(nextIndex);
+      const nextLoadedChunksSet = new Set(nextLoadedChunks);
+
+      const chunksToUnload = this.loadedChunks.filter(chunk => !nextLoadedChunksSet.has(chunk));
+
+      chunksToUnload.forEach(chunk => chunk.free());
+
+      this.chunkIndex = nextIndex;
+      this.loadedChunks = nextLoadedChunks;
+    }
+    this.loadedChunks.forEach(chunk => chunk.update(position));
   }
 
+  isNewIndex({ xi, yi, zi }) {
+    const chunkIndex = this.chunkIndex;
+    return xi !== chunkIndex.xi || yi !== chunkIndex.yi || zi !== chunkIndex.zi;
+  }
 }
