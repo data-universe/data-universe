@@ -11,24 +11,24 @@ export default class PlanetBuffer {
 
   load(data) {
     data.forEach((item) => {
-      const chunk = this.getChunkAt(item.position);
+      const chunk = this.getChunkAtPosition(item.position);
       chunk.push(item);
     });
   }
 
-  getChunkIndices({ x, y, z }) {
+  getChunkIndexAtPosition({ x, y, z }) {
     const xi = Math.floor(x / this.chunkSize);
     const yi = Math.floor(y / this.chunkSize);
     const zi = Math.floor(z / this.chunkSize);
     return { xi, yi, zi };
   }
 
-  getChunkAt(position) {
-    const index = this.getChunkIndices(position);
-    return this.getChunkByIndex(index);
+  getChunkAtPosition(position) {
+    const index = this.getChunkIndexAtPosition(position);
+    return this.getChunk(index);
   }
 
-  getChunkByIndex({ xi, yi, zi }) {
+  getChunk({ xi, yi, zi }) {
     const chunks = this.chunks;
     if (!chunks[xi]) {
       chunks[xi] = {};
@@ -43,11 +43,11 @@ export default class PlanetBuffer {
   }
 
   updatePosition(position) {
-    const index = this.getChunkIndices(position);
+    const index = this.getChunkIndexAtPosition(position);
     const lastIndex = this.lastChunkIndex;
     if (index.xi !== lastIndex.xi || index.yi !== lastIndex.yi || index.zi !== lastIndex.zi) {
       this.scene.remove(...this.planets);
-      const chunk = this.getChunkByIndex(index);
+      const chunk = this.getChunk(index);
       this.planets = chunk.map(item => new Planet(item));
 
       if (this.planets.length > 0) {
