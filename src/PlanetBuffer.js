@@ -24,11 +24,11 @@ export default class PlanetBuffer {
   }
 
   getChunkAt(position) {
-    const { xi, yi, zi } = this.getChunkIndices(position);
-    return this.getChunkByIndex(xi, yi, zi);
+    const index = this.getChunkIndices(position);
+    return this.getChunkByIndex(index);
   }
 
-  getChunkByIndex(xi, yi, zi) {
+  getChunkByIndex({ xi, yi, zi }) {
     const chunks = this.chunks;
     if (!chunks[xi]) {
       chunks[xi] = {};
@@ -43,17 +43,17 @@ export default class PlanetBuffer {
   }
 
   updatePosition(position) {
-    const { xi, yi, zi } = this.getChunkIndices(position);
+    const index = this.getChunkIndices(position);
     const lastIndex = this.lastChunkIndex;
-    if (xi !== lastIndex.xi || yi !== lastIndex.yi || zi !== lastIndex.zi) {
+    if (index.xi !== lastIndex.xi || index.yi !== lastIndex.yi || index.zi !== lastIndex.zi) {
       this.scene.remove(...this.planets);
-      const chunk = this.getChunkByIndex(xi, yi, zi);
+      const chunk = this.getChunkByIndex(index);
       this.planets = chunk.map(item => new Planet(item));
 
       if (this.planets.length > 0) {
         this.scene.add(...this.planets);
       }
-      this.lastChunkIndex = { xi, yi, zi };
+      this.lastChunkIndex = index;
     }
   }
 
