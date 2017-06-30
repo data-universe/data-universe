@@ -1,4 +1,4 @@
-module.exports = function webVRManagerLoader(content) {
+module.exports = function boilerplateLoader(content) {
   if (this.cacheable) this.cacheable();
   return `
   

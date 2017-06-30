@@ -7,6 +7,8 @@ module.exports = function threeLoader(content) {
 
     const THREE = {
       Vector3,
+      Matrix4,
+      PerspectiveCamera,
     };
 
     ${content}

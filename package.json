@@ -31,6 +31,8 @@
   "dependencies": {
     "events": "^1.1.1",
     "three": "^0.84.0",
+    "webvr-boilerplate": "^0.5.0",
+    "webvr-polyfill": "^0.9.35",
     "ws": "^2.2.3",
     "xbox-controller": "^0.7.0"
   }

@@ -1,8 +1,6 @@
-// Add loaders for these
-import { WebVRManager } from '../webvr-boilerplate/build/webvr-manager';
-
 import { Clock } from 'three/core/Clock';
 import { VREffect } from 'three_examples/effects/VREffect';
+import { WebVRManager } from 'webvr_boilerplate/webvr-manager';
 import CustomScene from './CustomScene';
 import CustomCamera from './CustomCamera';
 import CustomControls from './CustomControls';
@@ -59,7 +57,9 @@ export default class Game {
     const origin = this.scene.planets[96].position;
     this.resetPosition();
     this.camera.lookAt(origin);
-    this.manager.enterVR;
+    if (this.manager.isVRCompatible) {
+      this.manager.enterVRMode_();
+    }
     this.render();
   }
 
@@ -67,11 +67,20 @@ export default class Game {
     requestAnimationFrame(this.render);
     const delta = this.clock.getDelta();
 
-    this.selector.update(this.scene, this.camera);
-    this.controls.update(delta);
-    this.scene.update(this.camera);
+    if (this.manager.isVRCompatible) {
+      this.selector.update(this.scene, this.camera);
+      this.controls.update(delta, true);
+      this.scene.update(this.camera);
 
-    this.stereoEffect.render(this.scene, this.camera);
+      this.stereoEffect.render(this.scene, this.camera);
+    }
+    else {
+      this.selector.update(this.scene, this.camera);
+      this.controls.update(delta, false);
+      this.scene.update(this.camera);
+
+      this.renderer.render(this.scene, this.camera);
+    }
   }
 
   onMessage(message) {

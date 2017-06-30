@@ -26,10 +26,6 @@ module.exports = {
         loader: path.resolve(__dirname, 'loaders/stereo-effect-loader'),
       },
       {
-        test: /DeviceOrientationControls\.js$/,
-        loader: path.resolve(__dirname, 'loaders/device-orientation-controls-loader'),
-      },
-      {
         test: /VREffect\.js$/,
         loader: path.resolve(__dirname, 'loaders/vr-effect-loader'),
       },
@@ -48,7 +44,7 @@ module.exports = {
     alias: {
       three: path.resolve(__dirname, 'node_modules/three/src/'),
       three_examples: path.resolve(__dirname, 'node_modules/three/examples/js/'),
-      webvr_manager: path.resolve(__dirname, 'webvr-boilerplate/build/'),
+      webvr_boilerplate: path.resolve(__dirname, 'node_modules/webvr-boilerplate/build/'),
     },
   },
   plugins: [
