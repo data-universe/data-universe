@@ -6,6 +6,8 @@ export default class Selector {
   constructor() {
     this.onKeyPress = this.onKeyPress.bind(this);
     this.onMessage = this.onMessage.bind(this);
+    this.isSelectPressed = false;
+    this.oneFramePassed = false;
 
     this.raycaster = new Raycaster();
     this.selectionDistance = 30;
@@ -16,7 +18,7 @@ export default class Selector {
   update(scene, camera) {
     const cameraDirection = new Vector2(camera.getWorldDirection.x, camera.getWorldDirection.y);
     this.raycaster.setFromCamera(cameraDirection, camera);
-    const intersection = this.raycaster.intersectObjects(scene.children)[0];
+    const intersection = this.raycaster.intersectObjects(scene.planets, true)[0];
     if (
       intersection &&
       intersection.distance < this.selectionDistance
@@ -27,6 +29,14 @@ export default class Selector {
     else {
       this.intersection = null;
       this.selected = null;
+    }
+
+    if (this.isSelectPressed && !this.oneFramePassed) {
+      this.oneFramePassed = true;
+    }
+    else if (this.isSelectPressed) {
+      this.oneFramePassed = false;
+      this.isSelectPressed = false;
     }
   }
 
@@ -41,13 +51,15 @@ export default class Selector {
   }
 
   onKeyPress(event) {
-    if (event.code === 'Space') {
+    if (!this.isSelectPressed && event.code === 'Space') {
+      this.isSelectPressed = true;
       this.select();
     }
   }
 
   onMessage(message) {
-    if (message.type === 'a:release') {
+    if (!this.isSelectPressed && message.type === 'a:release') {
+      this.isSelectPressed = true;
       this.select();
     }
   }
@@ -56,13 +68,14 @@ export default class Selector {
     const selected = this.selected;
     let data;
     if (selected) {
-      if (selected.isPlanet) {
-        data = selected.data;
-      }
-      else if (selected.isBillboard && selected.parent) {
+      if (selected.parent.isPlanet) {
         data = selected.parent.data;
       }
+      else if (selected.parent.isBillboard) {
+        data = selected.parent.parent.data;
+      }
     }
+
     socket.send({
       type: 'selected',
       data,

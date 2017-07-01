@@ -70,6 +70,7 @@ export default class Game {
     if (this.manager.isVRCompatible) {
       this.selector.update(this.scene, this.camera);
       this.controls.update(delta, true);
+      this.ui.update(delta, this.selector);
       this.scene.update(this.camera);
 
       this.stereoEffect.render(this.scene, this.camera);
