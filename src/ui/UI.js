@@ -16,8 +16,8 @@ export default class UI extends Object3D {
     this.position.set(0, 0, -5);
   }
 
-  update(selector) {
-    this.crosshair.update(selector);
-    this.popup.update(selector);
+  update(delta, selector) {
+    this.crosshair.update(delta, selector);
+    this.popup.update(delta, selector);
   }
 }
