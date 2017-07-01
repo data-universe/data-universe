@@ -46,11 +46,11 @@ function createGeometry(numberOfStars) {
 
 function createMaterials() {
   return [
-    new PointsMaterial({ color: 0x555555, size: 2, sizeAttenuation: false, fog: false }),
-    new PointsMaterial({ color: 0x555555, size: 1, sizeAttenuation: false, fog: false }),
-    new PointsMaterial({ color: 0x333333, size: 2, sizeAttenuation: false, fog: false }),
-    new PointsMaterial({ color: 0x3a3a3a, size: 1, sizeAttenuation: false, fog: false }),
-    new PointsMaterial({ color: 0x1a1a1a, size: 2, sizeAttenuation: false, fog: false }),
-    new PointsMaterial({ color: 0x1a1a1a, size: 1, sizeAttenuation: false, fog: false }),
+    new PointsMaterial({ color: 0x555555, size: 0.8, sizeAttenuation: false, fog: false }),
+    new PointsMaterial({ color: 0x555555, size: 0.3, sizeAttenuation: false, fog: false }),
+    new PointsMaterial({ color: 0x333333, size: 1.0, sizeAttenuation: false, fog: false }),
+    new PointsMaterial({ color: 0x3a3a3a, size: 0.6, sizeAttenuation: false, fog: false }),
+    new PointsMaterial({ color: 0x1a1a1a, size: 0.3, sizeAttenuation: false, fog: false }),
+    new PointsMaterial({ color: 0x1a1a1a, size: 0.4, sizeAttenuation: false, fog: false }),
   ];
 }
