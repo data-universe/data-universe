@@ -9,21 +9,21 @@ export default class Crosshair extends LineSegments {
     const material = createMaterial();
     super(geometry, material);
 
-    this.scaleStep = 0.05;
+    this.scaleStep = 2.5;
     this.selected = false;
     this.timer = 0;
-    this.timeLimit = 30;
+    this.timeLimit = 0.15;
   }
 
-  update(selector) {
+  update(delta, selector) {
     // TODO: Rewrite this animation using tweens.
 
     if (!this.selected && selector.isSelectPressed && selector.selected) {
       this.selected = true;
     }
     else if (this.selected && this.timer < this.timeLimit) {
-      this.timer += 3;
-      this.scale.addScalar(this.scaleStep);
+      this.timer += delta;
+      this.scale.addScalar(delta * this.scaleStep);
     }
     else if (this.selected) {
       this.scale.set(1, 1, 1);
@@ -36,7 +36,7 @@ export default class Crosshair extends LineSegments {
 function createMaterial() {
   return new LineBasicMaterial({
     color: '#fff',
-    linewidth: 2,
+    linewideltah: 2,
     linecap: 'round',
     linejoin: 'round',
     opacity: 0.25,
