@@ -68,7 +68,7 @@ function createSprite(text) {
 
 function createTexture(text) {
   const canvas = document.createElement('canvas');
-  canvas.wideltah = 256;
+  canvas.width = 256;
   canvas.height = 256;
   const context = canvas.getContext('2d');
 
