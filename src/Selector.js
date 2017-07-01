@@ -18,7 +18,8 @@ export default class Selector {
   update(scene, camera) {
     const cameraDirection = new Vector2(camera.getWorldDirection.x, camera.getWorldDirection.y);
     this.raycaster.setFromCamera(cameraDirection, camera);
-    const intersection = this.raycaster.intersectObjects(scene.planets, true)[0];
+    // TODO: Check intersation only when select button is pressed
+    const intersection = this.raycaster.intersectObjects(scene.getPlanets(), true)[0];
     if (
       intersection &&
       intersection.distance < this.selectionDistance
