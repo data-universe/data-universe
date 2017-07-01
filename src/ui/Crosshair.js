@@ -36,7 +36,7 @@ export default class Crosshair extends LineSegments {
 function createMaterial() {
   return new LineBasicMaterial({
     color: '#fff',
-    linewideltah: 2,
+    linewidth: 2,
     linecap: 'round',
     linejoin: 'round',
     opacity: 0.25,
