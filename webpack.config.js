@@ -41,6 +41,7 @@ module.exports = {
       three: path.resolve(__dirname, 'node_modules/three/src/'),
       three_examples: path.resolve(__dirname, 'node_modules/three/examples/js/'),
       webvr_boilerplate: path.resolve(__dirname, 'node_modules/webvr-boilerplate/build/'),
+      vendor: path.resolve(__dirname, 'vendor/'),
     },
   },
   plugins: [

@@ -1,5 +1,5 @@
 import { Clock } from 'three/core/Clock';
-import { VREffect } from 'three_examples/effects/VREffect';
+import { VREffect } from 'vendor/VREffect';
 import { WebVRManager } from 'webvr_boilerplate/webvr-manager';
 import CustomScene from './CustomScene';
 import CustomCamera from './CustomCamera';
