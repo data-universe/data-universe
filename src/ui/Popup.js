@@ -8,7 +8,7 @@ export default class Popup extends Object3D {
     super();
 
     this.sprite = createSprite(text);
-    this.initPosY = -2;
+    this.initPosY = -1.5;
     this.sprite.position.set(0, this.initPosY, 0);
 
     this.posY = this.initPosY;
@@ -18,18 +18,18 @@ export default class Popup extends Object3D {
     this.isUp = false;
     this.isMovingUp = true;
     this.timer = 0;
-    this.timeLimit = 80;
+    this.timeLimit = 1.2;
     this.add(this.sprite);
   }
 
-  update(selector) {
+  update(delta, selector) {
     // TODO: Rewrite this animation using tweens.
 
     if (!this.selected && selector.isSelectPressed && selector.selected) {
       this.selected = true;
     }
     else if (this.selected && !this.isUp && this.isMovingUp && this.posY <= this.upPosY) {
-      this.posY += 0.03;
+      this.posY += delta * 2.5;
       this.sprite.position.set(0, this.posY, 0);
     }
     else if (this.selected && !this.isUp && this.isMovingUp) {
@@ -37,13 +37,13 @@ export default class Popup extends Object3D {
       this.isMovingUp = false;
     }
     else if (this.selected && this.isUp && this.timer < this.timeLimit) {
-      this.timer += 1;
+      this.timer += delta;
     }
     else if (this.selected && this.isUp) {
       this.isUp = false;
     }
     else if (this.selected && !this.isUp && !this.isMovingUp && this.posY > this.initPosY) {
-      this.posY -= 0.03;
+      this.posY -= delta * 1.0;
       this.sprite.position.set(0, this.posY, 0);
     }
     else if (this.selected) {

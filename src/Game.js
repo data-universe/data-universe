@@ -62,7 +62,7 @@ export default class Game {
     this.selector.update(this.scene, this.camera);
     this.controls.update(delta);
     this.scene.update();
-    this.ui.update(this.selector);
+    this.ui.update(delta, this.selector);
 
     this.stereoEffect.render(this.scene, this.camera);
   }
