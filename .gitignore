@@ -33,5 +33,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
-data.js
+assets/bigData.json
 .Rhistory
