@@ -7,20 +7,18 @@ export default class Crosshair extends LineSegments {
   constructor() {
     const geometry = createGeometry(0.05);
     const material = createMaterial();
-
-    const obj = super(geometry, material);
+    super(geometry, material);
 
     this.size = 0.05;
     this.selected = false;
     this.timer = 0;
     this.timeLimit = 30;
-    return obj;
   }
 
   update(selector) {
     // TODO: Rewrite this animation using tweens.
 
-    if (!this.selected && selector.selectEvent && selector.selected) {
+    if (!this.selected && selector.isSelectPressed && selector.selected) {
       this.selected = true;
     }
     else if (this.selected && this.timer < this.timeLimit) {

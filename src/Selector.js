@@ -6,8 +6,8 @@ export default class Selector {
   constructor() {
     this.onKeyPress = this.onKeyPress.bind(this);
     this.onMessage = this.onMessage.bind(this);
-    this.selectEvent = false;
-    this.timer = 0;
+    this.isSelectPressed = false;
+    this.oneFramePassed = false;
 
     this.raycaster = new Raycaster();
     this.selectionDistance = 30;
@@ -31,12 +31,12 @@ export default class Selector {
       this.selected = null;
     }
 
-    if (this.selectEvent && this.timer < 5) {
-      this.timer += 1;
+    if (this.isSelectPressed && !this.oneFramePassed) {
+      this.oneFramePassed = true;
     }
-    else if (this.selectEvent && this.timer >= 5) {
-      this.timer = 0;
-      this.selectEvent = false;
+    else if (this.isSelectPressed) {
+      this.oneFramePassed = false;
+      this.isSelectPressed = false;
     }
   }
 
@@ -51,15 +51,15 @@ export default class Selector {
   }
 
   onKeyPress(event) {
-    if (!this.selectEvent && event.code === 'Space') {
-      this.selectEvent = true;
+    if (!this.isSelectPressed && event.code === 'Space') {
+      this.isSelectPressed = true;
       this.select();
     }
   }
 
   onMessage(message) {
-    if (!this.selectEvent && message.type === 'a:release') {
-      this.selectEvent = true;
+    if (!this.isSelectPressed && message.type === 'a:release') {
+      this.isSelectPressed = true;
       this.select();
     }
   }
@@ -68,13 +68,10 @@ export default class Selector {
     const selected = this.selected;
     let data;
     if (selected) {
-      if (selected.isPlanet) {
-        data = selected.data;
-      }
-      else if (selected.isBillboard && selected.parent) {
+      if (selected.parent.isPlanet) {
         data = selected.parent.data;
       }
-      else if (selected.type === 'Mesh' && selected.parent.parent) {
+      else if (selected.parent.isBillboard) {
         data = selected.parent.parent.data;
       }
     }
