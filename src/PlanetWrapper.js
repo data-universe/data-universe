@@ -11,12 +11,12 @@ export default class PlanetWrapper {
 
   load() {
     this.planet = new Planet(this.data);
-    this.scene.add(this.planet);
+    this.scene.addPlanet(this.planet);
     this.loaded = true;
   }
 
   unload() {
-    this.scene.remove(this.planet);
+    this.scene.removePlanet(this.planet);
     this.planet = null;
     this.loaded = false;
   }

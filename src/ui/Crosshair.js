@@ -7,8 +7,29 @@ export default class Crosshair extends LineSegments {
   constructor() {
     const geometry = createGeometry(0.05);
     const material = createMaterial();
-
     super(geometry, material);
+
+    this.scaleStep = 0.05;
+    this.selected = false;
+    this.timer = 0;
+    this.timeLimit = 30;
+  }
+
+  update(selector) {
+    // TODO: Rewrite this animation using tweens.
+
+    if (!this.selected && selector.isSelectPressed && selector.selected) {
+      this.selected = true;
+    }
+    else if (this.selected && this.timer < this.timeLimit) {
+      this.timer += 3;
+      this.scale.addScalar(this.scaleStep);
+    }
+    else if (this.selected) {
+      this.scale.set(1, 1, 1);
+      this.selected = false;
+      this.timer = 0;
+    }
   }
 }
 
@@ -32,3 +53,4 @@ function createGeometry(size) {
   geometry.vertices.push(new Vector3(halfSize, 0, 0));
   return geometry;
 }
+

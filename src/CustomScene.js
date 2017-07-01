@@ -7,7 +7,6 @@ import { BufferAttribute } from 'three/core/BufferAttribute';
 import { Points } from 'three/objects/Points';
 import { PointsMaterial } from 'three/materials/PointsMaterial';
 import { TextureLoader } from 'three/loaders/TextureLoader';
-import { Color } from 'three/math/Color';
 import { VertexColors } from 'three/constants';
 import Stars from './Stars';
 import PlanetBuffer from './PlanetBuffer';
@@ -31,7 +30,22 @@ export default class CustomScene extends Scene {
     const stars = new Stars();
     this.add(stars);
 
+    this.planetsSet = new Set();
     this.planetBuffer = new PlanetBuffer(this, camera);
+  }
+
+  addPlanet(planet) {
+    this.add(planet);
+    this.planetsSet.add(planet);
+  }
+
+  removePlanet(planet) {
+    this.remove(planet);
+    this.planetsSet.delete(planet);
+  }
+
+  getPlanets() {
+    return [...this.planetsSet.values()];
   }
 
   load(data) {
