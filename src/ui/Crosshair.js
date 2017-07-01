@@ -9,7 +9,7 @@ export default class Crosshair extends LineSegments {
     const material = createMaterial();
     super(geometry, material);
 
-    this.size = 0.05;
+    this.scaleStep = 0.05;
     this.selected = false;
     this.timer = 0;
     this.timeLimit = 30;
@@ -23,27 +23,14 @@ export default class Crosshair extends LineSegments {
     }
     else if (this.selected && this.timer < this.timeLimit) {
       this.timer += 3;
-      this.size += 0.002;
-      this.updateGeometry(this.size);
+      this.scale.addScalar(this.scaleStep);
     }
     else if (this.selected) {
-      this.size = 0.05;
-      this.updateGeometry(this.size);
+      this.scale.set(1, 1, 1);
       this.selected = false;
       this.timer = 0;
     }
   }
-
-  updateGeometry(size) {
-    const halfSize = size / 2;
-    this.geometry.dynamic = true;
-    this.geometry.vertices[0] = new Vector3(0, halfSize, 0);
-    this.geometry.vertices[1] = new Vector3(0, -halfSize, 0);
-    this.geometry.vertices[2] = new Vector3(-halfSize, 0, 0);
-    this.geometry.vertices[3] = new Vector3(halfSize, 0, 0);
-    this.geometry.verticesNeedUpdate = true;
-  }
-
 }
 
 function createMaterial() {
