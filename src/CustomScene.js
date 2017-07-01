@@ -1,5 +1,5 @@
 import { Scene } from 'three/scenes/Scene';
-import { Fog } from 'three/scenes/Fog';
+import { FogExp2 } from 'three/scenes/FogExp2';
 import { DirectionalLight } from 'three/lights/DirectionalLight';
 import { AmbientLight } from 'three/lights/AmbientLight';
 import { BufferGeometry } from 'three/core/BufferGeometry';
@@ -7,8 +7,11 @@ import { BufferAttribute } from 'three/core/BufferAttribute';
 import { Points } from 'three/objects/Points';
 import { PointsMaterial } from 'three/materials/PointsMaterial';
 import { TextureLoader } from 'three/loaders/TextureLoader';
+import { Color } from 'three/math/Color';
+import { VertexColors } from 'three/constants';
 import Stars from './Stars';
 import PlanetBuffer from './PlanetBuffer';
+import colors from './utils/colors';
 
 const ballImageUrl = require('../assets/ball.png');
 
@@ -16,7 +19,7 @@ export default class CustomScene extends Scene {
   constructor(camera) {
     super();
 
-    this.fog = new Fog(0x000000, 0.1, 500);
+    this.fog = new FogExp2(0x000000, 0.00000025);
 
     const sun = new DirectionalLight(0xffffff);
     sun.position.set(-1, 0, 1).normalize();
@@ -32,16 +35,27 @@ export default class CustomScene extends Scene {
   }
 
   load(data) {
+    const positionsArray = new Float32Array(data.length * 3);
+    const colorsArray = new Float32Array(data.length * 3);
+
+    for (let i = 0; i < data.length; i += 1) {
+      const item = data[i];
+      const i3 = i * 3;
+
+      const position = item.position;
+      positionsArray[i3 + 0] = position.x;
+      positionsArray[i3 + 1] = position.y;
+      positionsArray[i3 + 2] = position.z;
+
+      const color = colors[item.cluster];
+      colorsArray[i3 + 0] = color.r;
+      colorsArray[i3 + 1] = color.g;
+      colorsArray[i3 + 2] = color.b;
+    }
+
     const geometry = new BufferGeometry();
-    const positions = new Float32Array(data.length * 3);
-
-    data.forEach(({ position }, i) => {
-      positions[(i * 3)] = position.x;
-      positions[(i * 3) + 1] = position.y;
-      positions[(i * 3) + 2] = position.z;
-    });
-
-    geometry.addAttribute('position', new BufferAttribute(positions, 3));
+    geometry.addAttribute('position', new BufferAttribute(positionsArray, 3));
+    geometry.addAttribute('color', new BufferAttribute(colorsArray, 3));
 
     const sprite = new TextureLoader().load(ballImageUrl);
     const material = new PointsMaterial({
@@ -49,6 +63,7 @@ export default class CustomScene extends Scene {
       map: sprite,
       alphaTest: 0.5,
       transparent: true,
+      vertexColors: VertexColors,
     });
     const points = new Points(geometry, material);
     this.add(points);

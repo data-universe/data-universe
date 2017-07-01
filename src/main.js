@@ -16,13 +16,14 @@ container.appendChild(game.renderer.domElement);
 
 const multiplier = 200;
 
-const data = require('../data').map(({ id, tsneVektor }) => {
+const data = require('../data').map(({ id, tsneVektor, cluster }) => {
   const [x, y, z] = tsneVektor;
   return {
     id,
     title: 'foo',
     info: 'bar',
     position: new Vector3(x * multiplier, y * multiplier, z * multiplier),
+    cluster,
   };
 });
 
