@@ -22,10 +22,6 @@ module.exports = {
         loader: path.resolve(__dirname, 'loaders/fly-controls-loader'),
       },
       {
-        test: /StereoEffect\.js$/,
-        loader: path.resolve(__dirname, 'loaders/stereo-effect-loader'),
-      },
-      {
         test: /VREffect\.js$/,
         loader: path.resolve(__dirname, 'loaders/vr-effect-loader'),
       },

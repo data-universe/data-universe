@@ -29,18 +29,6 @@ export default class CustomControls {
 
     this.xboxControls.update(delta);
   }
-
-  toggleVrControls(enabled) {
-    if (this.vrSupported) {
-      this.vrControlsEnabled = enabled !== undefined ? enabled : !this.vrControlsEnabled;
-      if (this.vrControlsEnabled) {
-        this.controls = this.vrControls;
-      }
-      else {
-        this.controls = this.flyControls;
-      }
-    }
-  }
 }
 
 function createFlyControls(camera) {
