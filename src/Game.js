@@ -16,7 +16,7 @@ export default class Game {
     this.clock = new Clock();
     this.camera = new CustomCamera();
     this.scene = new CustomScene(this.camera);
-    this.controls = new CustomControls(this.camera);
+    this.controls = new CustomControls(this.camera, this.scene.clusters);
     this.renderer = new CustomRenderer();
     this.stereoEffect = new StereoEffect(this.renderer);
     this.selector = new Selector();
@@ -44,8 +44,7 @@ export default class Game {
   }
 
   resetPosition() {
-    const { x, y, z } = this.scene.origin;
-    this.camera.position.set(x, y, z + 200);
+    this.camera.position.set(-250, 830, -100);
   }
 
   start(data) {

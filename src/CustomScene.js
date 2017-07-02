@@ -11,7 +11,7 @@ import { VertexColors } from 'three/constants';
 import Stars from './Stars';
 import PlanetBuffer from './PlanetBuffer';
 import colors from './utils/colors';
-import ClusterLabels from './ClusterLabels';
+import Clusters from './Clusters';
 
 const ballImageUrl = require('../assets/ball.png');
 
@@ -36,8 +36,8 @@ export default class CustomScene extends Scene {
     this.planetsSet = new Set();
     this.planetBuffer = new PlanetBuffer(this, camera);
 
-    this.clusterLabels = new ClusterLabels();
-    this.add(this.clusterLabels);
+    this.clusters = new Clusters();
+    this.add(this.clusters);
   }
 
   addPlanet(planet) {
@@ -88,14 +88,14 @@ export default class CustomScene extends Scene {
     const points = new Points(geometry, material);
     this.add(points);
 
-    this.origin = data[96].position.clone();
-
     this.planetBuffer.load(data);
-    this.clusterLabels.load(data);
+    this.clusters.load(data);
+
+    this.origin = this.clusters.labels[26].position;
   }
 
   update() {
     this.planetBuffer.update();
-    this.clusterLabels.update(this.camera.position);
+    this.clusters.update(this.camera.position);
   }
 }

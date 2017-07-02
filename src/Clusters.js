@@ -4,7 +4,7 @@ import { SpriteMaterial } from 'three/materials/SpriteMaterial';
 import { Sprite } from 'three/objects/Sprite';
 import { Object3D } from 'three/core/Object3D';
 
-export default class ClusterLabels extends Object3D {
+export default class Clusters extends Object3D {
   constructor() {
     super();
     this.visibleAtDistance = 250;
@@ -21,7 +21,7 @@ export default class ClusterLabels extends Object3D {
     });
     this.labels = sums.map((sum, i) => {
       const midpoint = sum.divideScalar(counts[i]);
-      const label = createSprite('Foo Bar Baz');
+      const label = createSprite(`Foo Bar Baz ${i}`);
       label.scale.multiplyScalar(100);
       label.position.copy(midpoint);
       this.add(label);
@@ -43,6 +43,17 @@ export default class ClusterLabels extends Object3D {
         label.material.opacity = 0;
       }
     }
+  }
+
+  distanceToNearestCluster(position) {
+    let minSquared = Number.MAX_VALUE;
+    this.labels.forEach((label) => {
+      const distanceSquared = position.distanceToSquared(label.position);
+      if (distanceSquared < minSquared) {
+        minSquared = distanceSquared;
+      }
+    });
+    return Math.sqrt(minSquared);
   }
 }
 

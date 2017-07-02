@@ -1,7 +1,7 @@
 import { Vector3 } from 'three/math/Vector3';
 import loadJson from './loadJson';
 
-const multiplier = 200;
+const multiplier = 300;
 
 export default function loadBigData(callback) {
   loadJson('assets/bigData.json', (error, data) => {
