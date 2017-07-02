@@ -1,5 +1,7 @@
 import { Clock } from 'three/core/Clock';
 import { StereoEffect } from 'three_examples/effects/StereoEffect';
+import { Vector3 } from 'three/math/Vector3';
+import Tween from 'tween/tween';
 import CustomScene from './CustomScene';
 import CustomCamera from './CustomCamera';
 import CustomControls from './CustomControls';
@@ -7,8 +9,6 @@ import CustomRenderer from './CustomRenderer';
 import Selector from './Selector';
 import UI from './ui/UI';
 import socket from './socket';
-import { Vector3 } from 'three/math/Vector3';
-import Tween from 'tween/tween';
 
 
 export default class Game {
@@ -59,12 +59,12 @@ export default class Game {
     this.camera.position.set(-194, 74, -29);
   }
 
-  overview(targetPos = { x: -194, y: 74, z: -29 }) {
-    const pos = this.camera.position;
-    this.overviewPosition = { x: pos.x, y: pos.y, z: pos.z };
-    const tweenPos = new Tween.Tween(this.camera.position).to(targetPos, 2000);
-    tweenPos.easing(Tween.Easing.Exponential.Out);
-    tweenPos.start();
+  overview(targetPosition = { x: -194, y: 74, z: -29 }) {
+    const position = this.camera.position;
+    this.overviewPosition = { x: position.x, y: position.y, z: position.z };
+    const tweenPosition = new Tween.Tween(this.camera.position).to(targetPosition, 2000);
+    tweenPosition.easing(Tween.Easing.Exponential.Out);
+    tweenPosition.start();
   }
 
   start(data) {
