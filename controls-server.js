@@ -69,6 +69,20 @@ xbox.on('start:release', (key) => {
   broadcast(message);
 });
 
+xbox.on('b', (key) => {
+  const message = {
+    type: 'b',
+  };
+  broadcast(message);
+});
+
+xbox.on('b:release', (key) => {
+  const message = {
+    type: 'b:release',
+  };
+  broadcast(message);
+});
+
 function broadcast(message) {
   const packet = JSON.stringify(message);
   server.clients.forEach((client) => {

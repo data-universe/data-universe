@@ -8,7 +8,7 @@ const game = new Game();
 game.connect();
 container.appendChild(game.renderer.domElement);
 
-const useBigData = false;
+const useBigData = true;
 
 function onDataLoad(err, data) {
   if (err) {
