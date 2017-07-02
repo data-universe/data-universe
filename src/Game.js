@@ -97,8 +97,7 @@ export default class Game {
   }
 
   onMessage(message) {
-    console.log(message);
-    if (message.type ===  'start:release') {
+    if (message.type === 'start:release') {
       this.resetPosition();
     }
     else if (message.type === 'b') {
