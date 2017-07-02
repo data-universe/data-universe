@@ -34,7 +34,7 @@ export default class CustomControls {
 function createFlyControls(camera) {
   const controls = new FlyControls(camera);
 
-  controls.movementSpeed = 10.0;
+  controls.movementSpeed = 25.0;
   controls.rollSpeed = Math.PI / 24;
   controls.autoForward = false;
   controls.dragToLook = false;

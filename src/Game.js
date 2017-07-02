@@ -15,8 +15,8 @@ export default class Game {
     this.onMessage = this.onMessage.bind(this);
 
     this.clock = new Clock();
-    this.scene = new CustomScene();
     this.camera = new CustomCamera();
+    this.scene = new CustomScene(this.camera);
     this.controls = new CustomControls(this.camera);
     this.renderer = new CustomRenderer();
     this.stereoEffect = new VREffect(this.renderer);
@@ -28,8 +28,6 @@ export default class Game {
     // Needed to render ui
     this.scene.add(this.camera);
     this.camera.add(this.ui);
-
-    this.resetPosition();
   }
 
   connect() {
@@ -49,14 +47,14 @@ export default class Game {
   }
 
   resetPosition() {
-    this.camera.position.set(-194, 74, -29);
+    const { x, y, z } = this.scene.origin;
+    this.camera.position.set(x, y, z + 200);
   }
 
   start(data) {
     this.scene.load(data);
-    const origin = this.scene.planets[96].position;
     this.resetPosition();
-    this.camera.lookAt(origin);
+    this.camera.lookAt(this.scene.origin);
     if (this.manager.isVRCompatible) {
       this.manager.enterVRMode_();
     }
@@ -70,8 +68,8 @@ export default class Game {
     if (this.manager.isVRCompatible) {
       this.selector.update(this.scene, this.camera);
       this.controls.update(delta, true);
-      this.ui.update(delta, this.selector);
       this.scene.update(this.camera);
+      this.ui.update(delta, this.selector);
 
       this.stereoEffect.render(this.scene, this.camera);
     }
