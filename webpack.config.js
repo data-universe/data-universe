@@ -36,6 +36,7 @@ module.exports = {
     alias: {
       three: path.resolve(__dirname, 'node_modules/three/src/'),
       three_examples: path.resolve(__dirname, 'node_modules/three/examples/js/'),
+      tween: path.resolve(__dirname, 'node_modules/tween/'),
     },
   },
   plugins: [
