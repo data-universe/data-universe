@@ -17,8 +17,8 @@ export default class Game {
     this.onMessage = this.onMessage.bind(this);
 
     this.clock = new Clock();
-    this.scene = new CustomScene();
     this.camera = new CustomCamera();
+    this.scene = new CustomScene(this.camera);
     this.controls = new CustomControls(this.camera);
     this.renderer = new CustomRenderer();
     this.stereoEffect = new StereoEffect(this.renderer);
@@ -29,7 +29,6 @@ export default class Game {
     this.scene.add(this.camera);
     this.camera.add(this.ui);
 
-    this.resetPosition();
     this.overviewPosition = { x: 0, y: 0, z: 0 };
     this.overviewDirection = new Vector3(0, 0, 0);
 
@@ -56,7 +55,8 @@ export default class Game {
   }
 
   resetPosition() {
-    this.camera.position.set(-194, 74, -29);
+    const { x, y, z } = this.scene.origin;
+    this.camera.position.set(x, y, z + 200);
   }
 
   overview(targetPosition = { x: -194, y: 74, z: -29 }) {
@@ -69,9 +69,8 @@ export default class Game {
 
   start(data) {
     this.scene.load(data);
-    const origin = this.scene.planets[96].position;
     this.resetPosition();
-    this.camera.lookAt(origin);
+    this.camera.lookAt(this.scene.origin);
     this.render();
   }
 
@@ -82,7 +81,8 @@ export default class Game {
 
     this.selector.update(this.scene, this.camera);
     this.controls.update(delta);
-    this.scene.update(this.camera);
+    this.scene.update();
+    this.ui.update(delta, this.selector);
 
     this.stereoEffect.render(this.scene, this.camera);
   }
