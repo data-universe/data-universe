@@ -8,7 +8,6 @@ import { Points } from 'three/objects/Points';
 import { PointsMaterial } from 'three/materials/PointsMaterial';
 import { TextureLoader } from 'three/loaders/TextureLoader';
 import { VertexColors } from 'three/constants';
-import { Vector3 } from 'three/math/Vector3';
 import Stars from './Stars';
 import PlanetBuffer from './PlanetBuffer';
 import colors from './utils/colors';
@@ -83,7 +82,7 @@ export default class CustomScene extends Scene {
     const points = new Points(geometry, material);
     this.add(points);
 
-    this.origin = new Vector3(0, 0, 0);
+    this.origin = data[96].position.clone();
 
     this.planetBuffer.load(data);
   }
