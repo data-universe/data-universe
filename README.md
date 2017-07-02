@@ -29,3 +29,21 @@ Connect your phone with Safari or Chrome to port 8080 (if your firewall does not
 ## Contributing
 
 Do you wish to join us in our quest? We are an open community and welcome anyone who wishes to join! You can reach us on data-universe@openhack.io.
+
+## Contributors
+
+* Lukas Leander
+* Johan Linåker
+* Simon Persson
+* Marcus Rettig
+* Karl-Oskar Rikås
+
+### Based on a hackathon project by:
+
+* Carmen Geanina Dana
+* Mao Jiyan
+* Mark Meszaros
+* Simon Persson
+* Marcus Rettig
+* Karl-Oskar Rikås
+* Hamed Yahyaei
