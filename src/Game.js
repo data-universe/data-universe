@@ -1,10 +1,11 @@
+import { Object3D } from 'three/core/Object3D';
 import { Clock } from 'three/core/Clock';
-import { StereoEffect } from 'three_examples/effects/StereoEffect';
+import { WebVR } from 'three_examples/vr/WebVR';
 import { Vector3 } from 'three/math/Vector3';
 import Tween from 'tween/tween';
 import CustomScene from './CustomScene';
 import CustomCamera from './CustomCamera';
-import CustomControls from './CustomControls';
+import ViveControls from './ViveControls';
 import CustomRenderer from './CustomRenderer';
 import Selector from './Selector';
 import UI from './ui/UI';
@@ -18,17 +19,30 @@ export default class Game {
 
     this.clock = new Clock();
     this.camera = new CustomCamera();
+    this.body = new Object3D();
     this.scene = new CustomScene(this.camera);
-    this.controls = new CustomControls(this.camera, this.scene.clusters);
+    this.controls = new ViveControls(this.body);
     this.renderer = new CustomRenderer();
-    this.stereoEffect = new StereoEffect(this.renderer);
     this.selector = new Selector();
     this.ui = new UI();
 
-    // Needed to render ui
+    const container = document.body;
+    container.appendChild(this.renderer.domElement);
+
     this.scene.add(this.camera);
+    this.body.camera = this.camera;
+    this.body.add(this.camera);
+    this.scene.add(this.body);
     this.camera.add(this.ui);
 
+    // Enable VR
+    this.renderer.vr.enabled = true;
+    WebVR.getVRDisplay((display) => {
+      this.renderer.vr.setDevice(display);
+      document.body.appendChild(WebVR.getButton(display, this.renderer.domElement));
+    });
+
+    // Overview
     this.overviewPosition = { x: 0, y: 0, z: 0 };
     this.overviewDirection = new Vector3(0, 0, 0);
 
@@ -55,13 +69,14 @@ export default class Game {
   }
 
   resetPosition() {
-    this.camera.position.set(-250, 830, -100);
+    const { x, y, z } = this.scene.origin;
+    this.body.position.set(x, y, z + 200);
   }
 
   overview(targetPosition = { x: -194, y: 74, z: -29 }) {
-    const position = this.camera.position;
+    const position = this.body.position;
     this.overviewPosition = { x: position.x, y: position.y, z: position.z };
-    const tweenPosition = new Tween.Tween(this.camera.position).to(targetPosition, 2000);
+    const tweenPosition = new Tween.Tween(this.body.position).to(targetPosition, 2000);
     tweenPosition.easing(Tween.Easing.Exponential.Out);
     tweenPosition.start();
   }
@@ -70,11 +85,14 @@ export default class Game {
     this.scene.load(data);
     this.resetPosition();
     this.camera.lookAt(this.scene.origin);
-    this.render();
+    this.animate();
+  }
+
+  animate() {
+    this.renderer.animate(this.render);
   }
 
   render() {
-    requestAnimationFrame(this.render);
     const delta = this.clock.getDelta();
     Tween.update();
 
@@ -83,7 +101,7 @@ export default class Game {
     this.scene.update();
     this.ui.update(delta, this.selector);
 
-    this.stereoEffect.render(this.scene, this.camera);
+    this.renderer.render(this.scene, this.camera);
   }
 
   onKeyPress(event) {
