@@ -59,7 +59,7 @@ export default class Game {
     this.camera.position.set(x, y, z + 200);
   }
 
-  overview(targetPosition = { x: -194, y: 74, z: -29 }) {
+  overview(targetPosition = {x: 243.12087606957147, y: 410.09779639115675, z: 999.9306882563615}) {
     const position = this.camera.position;
     this.overviewPosition = { x: position.x, y: position.y, z: position.z };
     const tweenPosition = new Tween.Tween(this.camera.position).to(targetPosition, 2000);
