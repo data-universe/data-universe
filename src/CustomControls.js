@@ -3,8 +3,11 @@ import { DeviceOrientationControls } from 'three_examples/controls/DeviceOrienta
 import XboxRemoteControls from './XboxRemoteControls';
 
 export default class CustomControls {
-  constructor(camera) {
-    this.flyControls = createFlyControls(camera);
+  constructor(camera, clusters) {
+    this.camera = camera;
+    this.clusters = clusters;
+    this.initialMovementSpeed = 25.0;
+    this.flyControls = createFlyControls(camera, this.initialMovementSpeed);
     this.vrControls = null;
     this.xboxControls = new XboxRemoteControls(camera);
     this.controls = this.flyControls;
@@ -40,7 +43,24 @@ export default class CustomControls {
   }
 
   update(delta) {
-    this.controls.update(delta);
+    const initialMovementSpeed = this.initialMovementSpeed;
+    const limitDistance = 100;
+    const accelerateDistance = 100;
+    const maxSpeed = 200;
+    const maxSpeedIncrease = maxSpeed - initialMovementSpeed;
+
+    const distanceToNearestCluster = this.clusters.distanceToNearestCluster(this.camera.position);
+
+    if (distanceToNearestCluster >= limitDistance) {
+      const distanceFromLimit = distanceToNearestCluster - limitDistance;
+      const ratio = Math.min(distanceFromLimit, accelerateDistance) / accelerateDistance;
+
+      this.flyControls.movementSpeed = initialMovementSpeed + (ratio * maxSpeedIncrease);
+    }
+    else {
+      this.flyControls.movementSpeed = initialMovementSpeed;
+    }
+    this.flyControls.update(delta);
     this.xboxControls.update(delta);
   }
 
@@ -57,10 +77,10 @@ export default class CustomControls {
   }
 }
 
-function createFlyControls(camera) {
+function createFlyControls(camera, movementSpeed) {
   const controls = new FlyControls(camera);
 
-  controls.movementSpeed = 25.0;
+  controls.movementSpeed = movementSpeed;
   controls.rollSpeed = Math.PI / 24;
   controls.autoForward = false;
   controls.dragToLook = false;
