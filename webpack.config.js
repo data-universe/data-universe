@@ -6,6 +6,7 @@ module.exports = {
   entry: './src/main.js',
   devServer: {
     // public: '192.168.1.107:8080',
+    disableHostCheck: true,
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -32,6 +33,14 @@ module.exports = {
       {
         test: /DeviceOrientationControls\.js$/,
         loader: path.resolve(__dirname, 'loaders/device-orientation-controls-loader'),
+      },
+      {
+        test: /WebVR\.js$/,
+        loader: path.resolve(__dirname, 'loaders/webvr-loader'),
+      },
+      {
+        test: /VREffect\.js$/,
+        loader: path.resolve(__dirname, 'loaders/vr-effect-loader'),
       },
     ],
   },

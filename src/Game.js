@@ -1,5 +1,5 @@
 import { Clock } from 'three/core/Clock';
-import { StereoEffect } from 'three_examples/effects/StereoEffect';
+import { WebVR } from 'three_examples/vr/WebVR';
 import CustomScene from './CustomScene';
 import CustomCamera from './CustomCamera';
 import CustomControls from './CustomControls';
@@ -18,13 +18,22 @@ export default class Game {
     this.scene = new CustomScene(this.camera);
     this.controls = new CustomControls(this.camera);
     this.renderer = new CustomRenderer();
-    this.stereoEffect = new StereoEffect(this.renderer);
     this.selector = new Selector();
     this.ui = new UI();
+
+    const container = document.body;
+    container.appendChild(this.renderer.domElement);
 
     // Needed to render ui
     this.scene.add(this.camera);
     this.camera.add(this.ui);
+
+    // Enable VR
+    this.renderer.vr.enabled = true;
+    WebVR.getVRDisplay((display) => {
+      this.renderer.vr.setDevice(display);
+      document.body.appendChild(WebVR.getButton(display, this.renderer.domElement));
+    });
   }
 
   connect() {
@@ -52,11 +61,14 @@ export default class Game {
     this.scene.load(data);
     this.resetPosition();
     this.camera.lookAt(this.scene.origin);
-    this.render();
+    this.animate();
+  }
+
+  animate() {
+    this.renderer.animate(this.render);
   }
 
   render() {
-    requestAnimationFrame(this.render);
     const delta = this.clock.getDelta();
 
     this.selector.update(this.scene, this.camera);
@@ -64,7 +76,7 @@ export default class Game {
     this.scene.update();
     this.ui.update(delta, this.selector);
 
-    this.stereoEffect.render(this.scene, this.camera);
+    this.renderer.render(this.scene, this.camera);
   }
 
   onMessage(message) {

@@ -2,13 +2,10 @@ import loadMockData from './utils/loadMockData';
 import loadBigData from './utils/loadBigData';
 import Game from './Game';
 
-const container = document.body;
-
 const game = new Game();
 game.connect();
-container.appendChild(game.renderer.domElement);
 
-const useBigData = false;
+const useBigData = true;
 
 function onDataLoad(err, data) {
   if (err) {
