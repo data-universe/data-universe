@@ -23,6 +23,6 @@ function extract({ id, title, info, tsneVektor, cluster, cluster_name }) {
     info,
     position: new Vector3(x * multiplier, y * multiplier, z * multiplier),
     cluster,
-    cluster_name,
+    'clusterName': cluster_name,
   };
 }
