@@ -19,12 +19,15 @@ export default class Clusters extends Object3D {
 
     data.forEach(({ cluster, cluster_name, position }) => {
       sums[cluster].add(position);
-      if (cluster_name.length > 20) {
+      let name = cluster_name;
+      if (cluster_name.length > 22) {
         // TODO: use text wrapping instead
-        names[cluster] = cluster_name.split(' ')[0].slice(0, -1);
-      } else {
-        names[cluster] = cluster_name;
+        name = cluster_name.split(' ')[0];
+        if (name.slice(-1) === ',') {
+          name = name.slice(0, -1);
+        }
       }
+      names[cluster] = name;
       counts[cluster] += 1;
     });
     this.labels = sums.map((sum, i) => {
