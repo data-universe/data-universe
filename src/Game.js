@@ -1,6 +1,9 @@
 import { Clock } from 'three/core/Clock';
 import { StereoEffect } from 'three_examples/effects/StereoEffect';
 import { Vector3 } from 'three/math/Vector3';
+import { MeshBasicMaterial } from 'three/materials/MeshBasicMaterial';
+import { CircleGeometry } from 'three/geometries/CircleGeometry';
+import { Mesh } from 'three/objects/Mesh';
 import Tween from 'tween/tween';
 import CustomScene from './CustomScene';
 import CustomCamera from './CustomCamera';
@@ -62,10 +65,11 @@ export default class Game {
   overview(targetPosition = {x: 243.12087606957147, y: 410.09779639115675, z: 999.9306882563615}) {
     const position = this.camera.position;
     this.overviewPosition = { x: position.x, y: position.y, z: position.z };
-    const tweenPosition = new Tween.Tween(this.camera.position).to(targetPosition, 2000);
+    const tweenPosition = new Tween.Tween(this.camera.position).to(targetPosition, 3000);
     tweenPosition.easing(Tween.Easing.Exponential.Out);
     tweenPosition.start();
   }
+
 
   start(data) {
     this.scene.load(data);
