@@ -16,10 +16,10 @@ import Clusters from './Clusters';
 const ballImageUrl = require('../assets/ball.png');
 
 export default class CustomScene extends Scene {
-  constructor(camera) {
+  constructor(body) {
     super();
 
-    this.camera = camera;
+    this.body = body;
 
     this.fog = new FogExp2(0x000000, 0.00000025);
 
@@ -34,7 +34,7 @@ export default class CustomScene extends Scene {
     this.add(stars);
 
     this.planetsSet = new Set();
-    this.planetBuffer = new PlanetBuffer(this, camera);
+    this.planetBuffer = new PlanetBuffer(this, body);
 
     this.clusters = new Clusters();
     this.add(this.clusters);
@@ -96,6 +96,6 @@ export default class CustomScene extends Scene {
 
   update() {
     this.planetBuffer.update();
-    this.clusters.update(this.camera.position);
+    this.clusters.update(this.body.position);
   }
 }
