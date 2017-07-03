@@ -42,6 +42,10 @@ module.exports = {
         test: /VREffect\.js$/,
         loader: path.resolve(__dirname, 'loaders/vr-effect-loader'),
       },
+      {
+        test: /ViveController\.js$/,
+        loader: path.resolve(__dirname, 'loaders/vive-controller-loader'),
+      },
     ],
   },
   resolve: {

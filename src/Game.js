@@ -1,8 +1,9 @@
+import { Object3D } from 'three/core/Object3D';
 import { Clock } from 'three/core/Clock';
 import { WebVR } from 'three_examples/vr/WebVR';
 import CustomScene from './CustomScene';
 import CustomCamera from './CustomCamera';
-import CustomControls from './CustomControls';
+import ViveControls from './ViveControls';
 import CustomRenderer from './CustomRenderer';
 import Selector from './Selector';
 import UI from './ui/UI';
@@ -15,8 +16,9 @@ export default class Game {
 
     this.clock = new Clock();
     this.camera = new CustomCamera();
+    this.body = new Object3D();
     this.scene = new CustomScene(this.camera);
-    this.controls = new CustomControls(this.camera);
+    this.controls = new ViveControls(this.body);
     this.renderer = new CustomRenderer();
     this.selector = new Selector();
     this.ui = new UI();
@@ -24,9 +26,10 @@ export default class Game {
     const container = document.body;
     container.appendChild(this.renderer.domElement);
 
-    // Needed to render ui
     this.scene.add(this.camera);
-    this.camera.add(this.ui);
+    this.body.camera = this.camera;
+    this.body.add(this.camera);
+    this.scene.add(this.body);
 
     // Enable VR
     this.renderer.vr.enabled = true;
