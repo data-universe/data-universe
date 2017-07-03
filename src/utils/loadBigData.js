@@ -4,7 +4,7 @@ import loadJson from './loadJson';
 const multiplier = 300;
 
 export default function loadBigData(callback) {
-  loadJson('assets/bigData.json', (error, data) => {
+  loadJson('assets/newbigData_v8.json', (error, data) => {
     if (!error) {
       const bigData = data.map(extract);
       callback(undefined, bigData);
@@ -15,13 +15,14 @@ export default function loadBigData(callback) {
   });
 }
 
-function extract({ id, tsneVektor, cluster }) {
+function extract({ id, title, info, tsneVektor, cluster, cluster_name }) {
   const [x, y, z] = tsneVektor;
   return {
     id,
-    title: 'foo',
-    info: 'bar',
+    title,
+    info,
     position: new Vector3(x * multiplier, y * multiplier, z * multiplier),
     cluster,
+    cluster_name,
   };
 }

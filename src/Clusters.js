@@ -14,14 +14,22 @@ export default class Clusters extends Object3D {
   load(data) {
     const clustersCount = 30;
     const sums = Array(clustersCount).fill().map(() => new Vector3());
+    const names = Array(clustersCount).fill('');
     const counts = Array(clustersCount).fill(0);
-    data.forEach(({ cluster, position }) => {
+
+    data.forEach(({ cluster, cluster_name, position }) => {
       sums[cluster].add(position);
+      if (cluster_name.length > 20) {
+        // TODO: use text wrapping instead
+        names[cluster] = cluster_name.split(' ')[0].slice(0, -1);
+      } else {
+        names[cluster] = cluster_name;
+      }
       counts[cluster] += 1;
     });
     this.labels = sums.map((sum, i) => {
       const midpoint = sum.divideScalar(counts[i]);
-      const label = createSprite(`Foo Bar Baz ${i}`);
+      const label = createSprite(names[i]);
       label.scale.multiplyScalar(100);
       label.position.copy(midpoint);
       this.add(label);
@@ -69,8 +77,8 @@ function createSprite(text) {
 
 function createTexture(text) {
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
+  canvas.width = 1024;
+  canvas.height = 1024; // 512;
   const context = canvas.getContext('2d');
 
   context.font = 'Normal 48px Arial';
