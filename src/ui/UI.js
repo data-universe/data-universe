@@ -1,6 +1,6 @@
 import { Object3D } from 'three/core/Object3D';
 import Crosshair from './Crosshair';
-import Popup from './Popup';
+// import Popup from './Popup';
 
 export default class UI extends Object3D {
   constructor() {
