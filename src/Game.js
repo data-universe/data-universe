@@ -20,7 +20,8 @@ export default class Game {
     this.clock = new Clock();
     this.camera = new CustomCamera();
     this.body = new Object3D();
-    this.scene = new CustomScene(this.body);
+    this.camera.body = this.body;
+    this.scene = new CustomScene(this.camera);
     this.controls = new ViveControls(this.body);
     this.renderer = new CustomRenderer();
     this.selector = new Selector();
