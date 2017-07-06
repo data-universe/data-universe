@@ -9,7 +9,7 @@ export default class ViveControls {
       forwards: false,
       backwards: false,
     };
-    this.movementSpeed = 25.0;
+    this.movementSpeed = 10.0;
 
     this.onRightTriggerDown = this.onRightTriggerDown.bind(this);
     this.onRightTriggerUp = this.onRightTriggerUp.bind(this);

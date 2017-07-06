@@ -1,13 +1,15 @@
 import { Vector3 } from 'three/math/Vector3';
 import { Texture } from 'three/textures/Texture';
-import { SpriteMaterial } from 'three/materials/SpriteMaterial';
-import { Sprite } from 'three/objects/Sprite';
 import { Object3D } from 'three/core/Object3D';
+import { PlaneGeometry } from 'three/geometries/PlaneGeometry';
+import { DoubleSide } from 'three/constants';
+import { Mesh } from 'three/objects/Mesh';
+import { MeshBasicMaterial } from 'three/materials/MeshBasicMaterial';
 
 export default class Clusters extends Object3D {
   constructor() {
     super();
-    this.visibleAtDistance = 250;
+    this.visibleAtDistance = 150;
     this.labels = [];
   }
 
@@ -32,20 +34,21 @@ export default class Clusters extends Object3D {
     });
     this.labels = sums.map((sum, i) => {
       const midpoint = sum.divideScalar(counts[i]);
-      const label = createSprite(names[i]);
-      label.scale.multiplyScalar(100);
+      const label = createPlane(names[i]);
+      label.scale.multiplyScalar(200);
       label.position.copy(midpoint);
       this.add(label);
       return label;
     });
   }
 
-  update(cameraPosition) {
+  update(camera) {
     const visibleAtDistance = this.visibleAtDistance;
     const labels = this.labels;
     for (let i = 0; i < labels.length; i += 1) {
       const label = labels[i];
-      const distanceToCamera = cameraPosition.distanceTo(label.position);
+      label.quaternion.copy(camera.quaternion);
+      const distanceToCamera = camera.body.position.distanceTo(label.position);
       if (distanceToCamera > visibleAtDistance) {
         const distanceFromLimit = distanceToCamera - visibleAtDistance;
         label.material.opacity = Math.min(distanceFromLimit, 10) / 10;
@@ -68,14 +71,18 @@ export default class Clusters extends Object3D {
   }
 }
 
-// TODO: Provide a general util to create text sprites (use also in ui/Popup.js)
-function createSprite(text) {
-  const texture = createTexture(text);
+// TODO: Provide a general util to create text planes (use also in ui/Popup.js)
+function createPlane(text, subtext) {
+  const texture = createTexture(text, subtext);
   texture.needsUpdate = true;
-
-  const material = new SpriteMaterial({ map: texture, fog: true });
-  const sprite = new Sprite(material);
-  return sprite;
+  const geometry = new PlaneGeometry(1, 1, 1);
+  const material = new MeshBasicMaterial({
+    map: texture,
+    side: DoubleSide,
+    transparent: true,
+  });
+  const plane = new Mesh(geometry, material);
+  return plane;
 }
 
 function createTexture(text) {
@@ -87,7 +94,7 @@ function createTexture(text) {
   context.font = 'Normal 48px Arial';
   context.textAlign = 'center';
   context.fillStyle = 'rgba(245,245,245,0.75)';
-  context.fillText(text, 256, 256);
+  context.fillText(text, 512, 512);
 
   return new Texture(canvas);
 }

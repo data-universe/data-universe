@@ -1,13 +1,15 @@
 import { Object3D } from 'three/core/Object3D';
 import { Texture } from 'three/textures/Texture';
-import { SpriteMaterial } from 'three/materials/SpriteMaterial';
-import { Sprite } from 'three/objects/Sprite';
+import { PlaneGeometry } from 'three/geometries/PlaneGeometry';
+import { DoubleSide } from 'three/constants';
+import { Mesh } from 'three/objects/Mesh';
+import { MeshBasicMaterial } from 'three/materials/MeshBasicMaterial';
 
 export default class Billboard extends Object3D {
   constructor(text, subtext, height) {
     super();
 
-    const sprite = createSprite(text, subtext);
+    const sprite = createPlane(text, subtext);
     const y = height + 0.5;
     sprite.position.set(0, y, 0);
     this.add(sprite);
@@ -19,13 +21,17 @@ export default class Billboard extends Object3D {
   }
 }
 
-function createSprite(text, subtext) {
+function createPlane(text, subtext) {
   const texture = createTexture(text, subtext);
   texture.needsUpdate = true;
-
-  const material = new SpriteMaterial({ map: texture, fog: true });
-  const sprite = new Sprite(material);
-  return sprite;
+  const geometry = new PlaneGeometry(1, 1, 1);
+  const material = new MeshBasicMaterial({
+    map: texture,
+    side: DoubleSide,
+    transparent: true,
+  });
+  const plane = new Mesh(geometry, material);
+  return plane;
 }
 
 function createTexture(text, subtext) {
@@ -33,7 +39,7 @@ function createTexture(text, subtext) {
   const fontFace = 'Arial';
   const headerFontSize = 24;
   const infoFontSize = 20;
-  const backgroundColor = 'rgba(50,75,75,0.5)';
+  const backgroundColor = 'rgba(50,75,75,0.8)';
   const headerTextColor = 'rgba(255,255,255,0.75)';
   const infoTextColor = 'rgba(255,255,255,0.60)';
   const padding = 10;

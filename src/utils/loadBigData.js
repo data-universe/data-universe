@@ -4,7 +4,7 @@ import loadJson from './loadJson';
 const multiplier = 300;
 
 export default function loadBigData(callback) {
-  loadJson('assets/newbigData_v8.json', (error, data) => {
+  loadJson('assets/newBigData_v8.json', (error, data) => {
     if (!error) {
       const bigData = data.map(extract);
       callback(undefined, bigData);

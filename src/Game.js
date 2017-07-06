@@ -20,6 +20,7 @@ export default class Game {
     this.clock = new Clock();
     this.camera = new CustomCamera();
     this.body = new Object3D();
+    this.camera.body = this.body;
     this.scene = new CustomScene(this.camera);
     this.controls = new ViveControls(this.body);
     this.renderer = new CustomRenderer();
@@ -73,7 +74,9 @@ export default class Game {
     this.body.position.set(x, y, z + 200);
   }
 
-  overview(targetPosition = { x: -194, y: 74, z: -29 }) {
+  overview() {
+    const { x, y, z } = this.scene.origin;
+    const targetPosition = { x, y, z: z + 200 };
     const position = this.body.position;
     this.overviewPosition = { x: position.x, y: position.y, z: position.z };
     const tweenPosition = new Tween.Tween(this.body.position).to(targetPosition, 2000);
@@ -108,9 +111,9 @@ export default class Game {
     if (event.code === 'Digit1') {
       this.overview();
     }
-    else if (event.code === 'Digit2') {
-      this.overview(this.overviewPosition);
-    }
+    // else if (event.code === 'Digit2') {
+    //   this.overview(this.overviewPosition);
+    // }
   }
 
   onMessage(message) {

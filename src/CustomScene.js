@@ -20,6 +20,7 @@ export default class CustomScene extends Scene {
     super();
 
     this.camera = camera;
+    this.body = camera.body;
 
     this.fog = new FogExp2(0x000000, 0.00000025);
 
@@ -79,7 +80,7 @@ export default class CustomScene extends Scene {
 
     const sprite = new TextureLoader().load(ballImageUrl);
     const material = new PointsMaterial({
-      size: 5,
+      size: 0.8,
       map: sprite,
       alphaTest: 0.5,
       transparent: true,
@@ -96,6 +97,6 @@ export default class CustomScene extends Scene {
 
   update() {
     this.planetBuffer.update();
-    this.clusters.update(this.camera.position);
+    this.clusters.update(this.camera);
   }
 }
