@@ -1,6 +1,10 @@
-# `data-universe`
+# Data Universe
 
-`data-universe` makes your data accessible and understandable by enabling dynamic exploration and visualization in a Virtual Reality space.
+Data Universe makes your data accessible and understandable by enabling dynamic exploration and visualization in a Virtual Reality space.
+
+## Demo
+
+Demo available [here](https://data-universe.github.io/). Requires special browser and vr device. See [setup](#setup) for more info.
 
 ## About
 
