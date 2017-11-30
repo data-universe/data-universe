@@ -62,6 +62,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { from: 'src/list.html' },
+      { from: 'src/jobtech.html' },
     ]),
   ],
 };

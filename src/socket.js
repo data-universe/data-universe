@@ -18,7 +18,7 @@ class CustomSocket {
   }
 }
 
-const remoteUrl = `ws://${window.location.hostname}:8081`;
+const remoteUrl = `wss://${window.location.hostname}:8081`;
 const socket = new CustomSocket(remoteUrl);
 
 export default socket;

@@ -115,7 +115,7 @@ header.main-header h1 {
 
 <script type="text/javascript">
 
-const remoteUrl = `ws://${window.location.hostname}:8081`;
+const remoteUrl = `wss://${window.location.hostname}:8081`;
 const socket = new window.WebSocket(remoteUrl);
 
 const list = document.getElementById('data-list');
