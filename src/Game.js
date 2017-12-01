@@ -1,4 +1,3 @@
-import { Object3D } from 'three/core/Object3D';
 import { Clock } from 'three/core/Clock';
 import { WebVR } from 'three_examples/vr/WebVR';
 import { Vector3 } from 'three/math/Vector3';
