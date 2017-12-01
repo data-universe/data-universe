@@ -1,5 +1,7 @@
 # Data Universe
 
+**Announcement for OpenHack:** This application will only run on a HTC Vive VR Headset. If you want to continue developing it please get in contact and we can help you get it running on mobile devices.
+
 Data Universe makes your data accessible and understandable by enabling dynamic exploration and visualization in a Virtual Reality space.
 
 ## Demo
