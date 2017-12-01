@@ -5,7 +5,7 @@ import { Vector3 } from 'three/math/Vector3';
 import Tween from 'tween/tween';
 import CustomScene from './CustomScene';
 import CustomCamera from './CustomCamera';
-import ViveControls from './ViveControls';
+import CustomControls from './CustomControls';
 import CustomRenderer from './CustomRenderer';
 import Selector from './Selector';
 import UI from './ui/UI';
@@ -19,10 +19,8 @@ export default class Game {
 
     this.clock = new Clock();
     this.camera = new CustomCamera();
-    this.body = new Object3D();
-    this.camera.body = this.body;
     this.scene = new CustomScene(this.camera);
-    this.controls = new ViveControls(this.body);
+    this.controls = new CustomControls(this.camera, this.scene.clusters);
     this.renderer = new CustomRenderer();
     this.selector = new Selector();
     this.ui = new UI();
@@ -31,9 +29,6 @@ export default class Game {
     container.appendChild(this.renderer.domElement);
 
     this.scene.add(this.camera);
-    this.body.camera = this.camera;
-    this.body.add(this.camera);
-    this.scene.add(this.body);
     this.camera.add(this.ui);
 
     // Enable VR
@@ -71,15 +66,15 @@ export default class Game {
 
   resetPosition() {
     const { x, y, z } = this.scene.origin;
-    this.body.position.set(x, y, z + 200);
+    this.camera.position.set(x, y, z + 200);
   }
 
   overview() {
     const { x, y, z } = this.scene.origin;
     const targetPosition = { x, y, z: z + 200 };
-    const position = this.body.position;
+    const position = this.camera.position;
     this.overviewPosition = { x: position.x, y: position.y, z: position.z };
-    const tweenPosition = new Tween.Tween(this.body.position).to(targetPosition, 2000);
+    const tweenPosition = new Tween.Tween(this.camera.position).to(targetPosition, 2000);
     tweenPosition.easing(Tween.Easing.Exponential.Out);
     tweenPosition.start();
   }

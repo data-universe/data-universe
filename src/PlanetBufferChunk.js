@@ -13,7 +13,7 @@ export default class PlanetBufferChunk {
   }
 
   update(camera) {
-    const position = camera.body.position;
+    const position = camera.position;
     const bufferDistanceSquared = this.bufferDistance ** 2;
 
     this.planetWrappers.forEach((wrapper) => {

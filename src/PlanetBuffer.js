@@ -66,7 +66,7 @@ export default class PlanetBuffer {
   }
 
   update() {
-    const nextIndex = this.getChunkIndexAtPosition(this.camera.body.position);
+    const nextIndex = this.getChunkIndexAtPosition(this.camera.position);
     if (this.isNewIndex(nextIndex)) {
       const nextLoadedChunks = this.getChunksAround(nextIndex);
       const nextLoadedChunksSet = new Set(nextLoadedChunks);

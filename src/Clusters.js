@@ -48,7 +48,7 @@ export default class Clusters extends Object3D {
     for (let i = 0; i < labels.length; i += 1) {
       const label = labels[i];
       label.quaternion.copy(camera.quaternion);
-      const distanceToCamera = camera.body.position.distanceTo(label.position);
+      const distanceToCamera = camera.position.distanceTo(label.position);
       if (distanceToCamera > visibleAtDistance) {
         const distanceFromLimit = distanceToCamera - visibleAtDistance;
         label.material.opacity = Math.min(distanceFromLimit, 10) / 10;
